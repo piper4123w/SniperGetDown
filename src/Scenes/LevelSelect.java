@@ -12,17 +12,19 @@ import javafx.stage.FileChooser;
 public class LevelSelect extends Scene {
 	ArrayList<String> files;
 
+	public final static double PADDING = 25;
+
 	public void initChildScene() {
-		backGround = Color.BURLYWOOD;
+		backGround = Color.DARKOLIVEGREEN;
 		files = findLevels();
-		double x = Display.WIDTH / 10;
-		double y =  Display.HEIGHT / 14;
+		double x = Display.WIDTH / 10 + PADDING;
+		double y = Display.HEIGHT / 14 + PADDING;
 		for (String s : findLevels()) {
 			buttonList.add(new Button(s.substring(0, s.indexOf('.')), x, y, s, Display.WIDTH / 5, Display.HEIGHT / 7));
 			System.out.println(s.substring(0, s.indexOf('.')));
-			x += Display.WIDTH / 5;
-			if (x > Display.WIDTH / 5 +  Display.WIDTH / 10) {
-				x = 10;
+			x += Display.WIDTH / 5 + PADDING;
+			if (x > Display.WIDTH - Display.WIDTH / 10) {
+				x = Display.WIDTH / 10;
 				y += Display.HEIGHT / 7;
 			}
 		}
@@ -68,5 +70,4 @@ public class LevelSelect extends Scene {
 		world = new Objects.World();
 		world.populateWorld(grid);
 	}
-
 }

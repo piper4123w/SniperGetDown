@@ -86,6 +86,10 @@ public class Display extends Application {
 				ActiveScene = new Scenes.LevelSelect();
 				sceneSwitch = true;
 			}
+			if(message.contains("playLevel")){
+				ActiveScene = new Scenes.PlayScene(message.substring('.'));
+				sceneSwitch = true;
+			}
 			if (sceneSwitch)
 				ActiveScene.initScene(gc, this);
 		}

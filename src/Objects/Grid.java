@@ -1,5 +1,8 @@
 package Objects;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -10,15 +13,15 @@ public class Grid {
 
 	public double cellSize;
 
-	public int[][] gridCode;
+	public char[][] gridCode;
 
-	public Grid(){
+	public Grid() {
 		rows = 1;
 		cols = 1;
 		cellSize = 20;
-		
+
 	}
-	
+
 	public Grid(int r, int c, double cellSize) {
 		rows = r;
 		cols = c;
@@ -28,7 +31,7 @@ public class Grid {
 	}
 
 	private void initGridCode() { // draw a grid with blocks as boundary
-		gridCode = new int[rows][cols];
+		gridCode = new char[rows][cols];
 
 		for (int i = 0; i < cols; i++) {
 			gridCode[0][i] = BrickBlock.gridCode;
@@ -60,13 +63,29 @@ public class Grid {
 		this.rows = Integer.parseInt(lvlAr[0].substring(0, lvlAr[0].indexOf(',')));
 		this.cols = Integer.parseInt(lvlAr[0].substring(lvlAr[0].indexOf(',') + 1, lvlAr[0].length()));
 		System.out.println(rows + " " + cols);
-		this.gridCode = new int[rows][cols];
+		this.gridCode = new char[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				this.gridCode[i][j] = Character.getNumericValue(lvlAr[j + 1].charAt(i));
+				this.gridCode[i][j] = lvlAr[j + 1].charAt(i);
 			}
 		}
 		debugPrintGrid();
+	}
+
+	public void fileToGrid(File file) {
+		if (file != null) {
+			try {
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String levelString = "";
+				String str;
+				while ((str = reader.readLine()) != null) {
+					levelString += str + '\n';
+				}
+				stringToGrid(levelString);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

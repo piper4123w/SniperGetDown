@@ -11,6 +11,7 @@ import javafx.scene.*;
 import Scenes.EditorScene;
 import Scenes.LevelSelect;
 import Scenes.MainMenue;
+import Scenes.PlayScene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -47,7 +48,8 @@ public class Display extends Application {
 			((EditorScene) ActiveScene).updateScene(cursor.x, cursor.y);
 		if (ActiveScene instanceof LevelSelect)
 			((LevelSelect) ActiveScene).updateScene(cursor.x, cursor.y);
-
+		if (ActiveScene instanceof PlayScene)
+			((PlayScene) ActiveScene).updateScene(cursor.x, cursor.y);
 		cursor.update();
 
 		// ((Objects.Sniper) cursor).update();
@@ -75,7 +77,7 @@ public class Display extends Application {
 	}
 
 	private void handleSceneMessage(String message) {
-		System.out.println(message);
+		System.out.println("message= " + message);
 		boolean sceneSwitch = false;
 		if (message != null) {
 			if (message.equals("levelEditor")) {
@@ -86,8 +88,9 @@ public class Display extends Application {
 				ActiveScene = new Scenes.LevelSelect();
 				sceneSwitch = true;
 			}
-			if(message.contains("playLevel")){
-				ActiveScene = new Scenes.PlayScene(message.substring('.'));
+			if (message.contains("playLevel")) {
+				System.out.println(message.substring(message.indexOf(',') + 1));
+				ActiveScene = new Scenes.PlayScene(message.substring(message.indexOf(',') + 1));
 				sceneSwitch = true;
 			}
 			if (sceneSwitch)

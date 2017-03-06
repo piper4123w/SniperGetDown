@@ -31,12 +31,15 @@ public class Scene {
 			((EditorScene) this).initChildScene();
 		if (this instanceof LevelSelect)
 			((LevelSelect) this).initChildScene();
+		if (this instanceof PlayScene)
+			((PlayScene) this).initChildScene();
 	}
 
 	public String checkClick(double x, double y) {
 		for (Button b : buttonList) {
 			if (checkHover(b)) {
 				if (!b.message.isEmpty()) {
+					System.out.println(b.message);
 					if (b.message.contains("SCENE"))
 						return b.message.substring(b.message.indexOf(':') + 1);
 					else {

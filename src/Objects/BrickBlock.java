@@ -3,7 +3,7 @@ package Objects;
 import javafx.scene.image.Image;
 
 public class BrickBlock extends Block {
-	public final static int gridCode = 1;
+	public final static char gridCode = 'B';
 
 	public BrickBlock(double x, double y, double size) {
 		img = new Image("objectAssets/brick.gif", size, size, false, false);

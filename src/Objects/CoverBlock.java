@@ -3,7 +3,7 @@ package Objects;
 import javafx.scene.image.Image;
 
 public class CoverBlock extends Block {
-	public final static int gridCode = 2;
+	public final static int gridCode = 'C';
 
 	public CoverBlock(double x, double y, double size) {
 		img = new Image("objectAssets/cover.gif", size, size, false, false);

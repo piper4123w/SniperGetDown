@@ -17,6 +17,8 @@ public class Scene {
 	boolean debug = true;
 
 	ArrayList<Button> buttonList;
+
+	protected Objects.Grid grid;
 	Objects.World world;
 
 	Color backGround;
@@ -91,6 +93,10 @@ public class Scene {
 	private void fillBackground() {
 		gc.setFill(backGround);
 		gc.fillRect(0, 0, Display.WIDTH, Display.HEIGHT);
+	}
+
+	public Objects.Grid getGrid() {
+		return grid;
 	}
 
 }

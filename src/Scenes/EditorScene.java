@@ -1,9 +1,7 @@
 package Scenes;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 
 import Display.Display;
@@ -15,7 +13,6 @@ import javafx.stage.FileChooser;
 
 public class EditorScene extends Scene {
 
-	Objects.Grid grid;
 
 	final double menuBarSize = 50;
 	final double cellSize = 20;
@@ -28,8 +25,8 @@ public class EditorScene extends Scene {
 				menuBarSize, menuBarSize, "save"));
 		buttonList.add(new Button(new Image("menuItems/load.png"), 3 * (menuBarSize / 2),
 				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "load"));
-		buttonList.add(new Button(new Image("menuItems/load.png"), 5 * (menuBarSize / 2),
-				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "play"));
+		buttonList.add(new Button(new Image("menuItems/play.png"), 5 * (menuBarSize / 2),
+				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "SCENE:playLevel,GRID"));
 
 		buttonList.add(new Button(new Image("objectAssets/brick.gif"), Display.WIDTH - (menuBarSize / 2),
 				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "brick"));
@@ -99,9 +96,7 @@ public class EditorScene extends Scene {
 			saveLevel();
 		if (message.equals("load"))
 			loadLevel();
-		/*
-		 * if (message.equals("play")) playLevel();
-		 */
+
 		if (message.equals("brick"))
 			selectedBlockType = BrickBlock.gridCode;
 		if (message.equals("cover"))

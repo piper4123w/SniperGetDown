@@ -2,11 +2,12 @@ package Scenes;
 
 import java.io.File;
 
+import Display.Display;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class PlayScene extends Scene {
-
-	Objects.Grid grid;
+	final double menuBarSize = 50;
 
 	public PlayScene(String substring) {
 		File file = new File(System.getProperty("user.dir") + "/Levels/" + substring);
@@ -14,17 +15,24 @@ public class PlayScene extends Scene {
 		grid = new Objects.Grid();
 		grid.fileToGrid(file);
 		world = new Objects.World();
-		world.populateWorld(grid);
+		world.populateWorld(getGrid());
 	}
 
 	public PlayScene(Objects.Grid g) {
-		grid = g;
 		world = new Objects.World();
-		world.populateWorld(grid);
+		world.populateWorld(g);
 	}
 
 	public void initChildScene() {
-		backGround = Color.AQUAMARINE;
+		backGround = Color.DARKCYAN;
+		buttonList.add(new Button("Pause", Display.WIDTH - ((menuBarSize * 3) / 2), Display.HEIGHT - (menuBarSize / 2),
+				"pause", menuBarSize * 3, menuBarSize));
+		
+		addPlayers();
+	}
+	
+	public void addPlayers(){
+		
 	}
 
 }

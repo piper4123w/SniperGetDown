@@ -2,7 +2,7 @@ package Objects;
 
 import javafx.scene.image.Image;
 
-public class Sniper extends Actor {
+public class Sniper extends GameObject {
 
 	public boolean clicked = false;
 	public int clickCount = 0;

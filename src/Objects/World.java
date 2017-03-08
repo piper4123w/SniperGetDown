@@ -81,13 +81,30 @@ public class World {
 	}
 
 	// removes all instances of objects
-	public void remove(Class<Bank> cls) {
+	public void removeAll(Class<?> cls) {
 		Iterator<GameObject> iter = worldArray.iterator();
 
 		while (iter.hasNext()) {
 			GameObject o = iter.next();
 			if (o.getClass() == cls)
 				iter.remove();
+		}
+
+	}
+
+	public void remove(Grid grid, int r, int c) {
+		double x = c * grid.cellSize;
+		double y = c * grid.cellSize;
+		Class<?> cls = grid.getClassByPosition(r, c);
+		System.out.println(cls.getName());
+		Iterator<GameObject> iter = worldArray.iterator();
+
+		while (iter.hasNext()) {
+			GameObject o = iter.next();
+			if (o.getClass() == cls)
+				if (o.x == x && o.y == y)
+					iter.remove();
+
 		}
 
 	}

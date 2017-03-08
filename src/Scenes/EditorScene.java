@@ -20,6 +20,7 @@ public class EditorScene extends Scene {
 	public void initChildScene() {
 		// inits buttons for the scene, as well as background and any necessarry
 		// data structs
+
 		backGround = Color.DARKSLATEGRAY;
 		buttonList.add(new Button(new Image("menuItems/save.gif"), menuBarSize / 2, Display.HEIGHT - (menuBarSize / 2),
 				menuBarSize, menuBarSize, "save"));
@@ -28,14 +29,22 @@ public class EditorScene extends Scene {
 		buttonList.add(new Button(new Image("menuItems/play.png"), 5 * (menuBarSize / 2),
 				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "SCENE:playLevel,GRID"));
 
-		buttonList.add(new Button(new Image("objectAssets/brick.gif"), Display.WIDTH - (menuBarSize / 2),
-				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "brick"));
-		buttonList.add(new Button(new Image("objectAssets/cover.gif"), Display.WIDTH - 3 * (menuBarSize / 2),
-				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "cover"));
-		buttonList.add(new Button(new Image("objectAssets/Bank.png"), Display.WIDTH - 5 * (menuBarSize / 2),
-				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "bank"));
-		buttonList.add(new Button(new Image("objectAssets/Van.png"), Display.WIDTH - 7 * (menuBarSize / 2),
-				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "van"));
+		// -----Buttons from Right-----
+		int buttonFromRight = -1;
+		buttonList.add(new Button("del", Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2),
+				Display.HEIGHT - (menuBarSize / 2), "remove", menuBarSize, menuBarSize));
+		buttonList.add(new Button(new Image("objectAssets/brick.gif"),
+				Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2), Display.HEIGHT - (menuBarSize / 2),
+				menuBarSize, menuBarSize, "brick"));
+		buttonList.add(new Button(new Image("objectAssets/cover.gif"),
+				Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2), Display.HEIGHT - (menuBarSize / 2),
+				menuBarSize, menuBarSize, "cover"));
+		buttonList.add(new Button(new Image("objectAssets/Bank.png"),
+				Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2), Display.HEIGHT - (menuBarSize / 2),
+				menuBarSize, menuBarSize, "bank"));
+		buttonList.add(new Button(new Image("objectAssets/Van.png"),
+				Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2), Display.HEIGHT - (menuBarSize / 2),
+				menuBarSize, menuBarSize, "van"));
 
 		grid = new Objects.Grid((int) (Display.WIDTH / cellSize), (int) ((Display.HEIGHT - menuBarSize) / cellSize),
 				cellSize);
@@ -96,10 +105,17 @@ public class EditorScene extends Scene {
 		if (r < grid.rows - 1 && c < grid.cols - 1 && r > 0 && c > 0) {
 			if (selectedBlockType == Bank.gridCode && world.constains(Bank.class)) {
 				grid.remove(Bank.gridCode);
-				world.remove(Bank.class);
+				world.removeAll(Bank.class);
+			}
+			if (selectedBlockType == Van.gridCode && world.constains(Van.class)) {
+				grid.remove(Van.gridCode);
+				world.removeAll(Van.class);
 			}
 			grid.gridCode[r][c] = selectedBlockType;
-			world.addObject(grid, r, c);
+			if (selectedBlockType == 0)
+				world.remove(grid,r,c);
+			else
+				world.addObject(grid, r, c);
 		}
 	}
 
@@ -123,6 +139,8 @@ public class EditorScene extends Scene {
 			selectedBlockType = Bank.gridCode;
 		if (message.equals("van"))
 			selectedBlockType = Van.gridCode;
+		if (message.equals("remove"))
+			selectedBlockType = 0;
 	}
 
 }

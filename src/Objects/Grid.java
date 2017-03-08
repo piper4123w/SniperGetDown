@@ -97,4 +97,22 @@ public class Grid {
 		}
 	}
 
+	public Class<?> getClassByPosition(int r, int c) {
+		char code = gridCode[r][c];
+		System.out.println("code:" + code);
+		switch (code) {
+		case BrickBlock.gridCode:
+			return BrickBlock.class;
+		case CoverBlock.gridCode:
+			return CoverBlock.class;
+		case Bank.gridCode:
+			return Bank.class;
+		case Van.gridCode:
+			return Van.class;
+		default:
+			System.out.println("Found nothing");
+			return null;
+		}
+	}
+
 }

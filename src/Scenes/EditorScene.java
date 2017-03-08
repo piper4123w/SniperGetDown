@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 import Display.Display;
+import Objects.Bank;
 import Objects.BrickBlock;
 import Objects.CoverBlock;
 import javafx.scene.image.Image;
@@ -12,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 public class EditorScene extends Scene {
-
 
 	final double menuBarSize = 50;
 	final double cellSize = 20;
@@ -32,17 +32,21 @@ public class EditorScene extends Scene {
 				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "brick"));
 		buttonList.add(new Button(new Image("objectAssets/cover.gif"), Display.WIDTH - 3 * (menuBarSize / 2),
 				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "cover"));
+		buttonList.add(new Button(new Image("objectAssets/Bank.png"), Display.WIDTH - 5 * (menuBarSize / 2),
+				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "bank"));
 
 		grid = new Objects.Grid((int) (Display.WIDTH / cellSize), (int) ((Display.HEIGHT - menuBarSize) / cellSize),
 				cellSize);
 		world = new Objects.World();
 		world.populateWorld(grid);
-		System.out.println(world.getSize());
+		if (Display.debug)
+			System.out.println(world.getSize());
 
 	}
 
 	public void loadLevel() {
-		System.out.println("Loading...");
+		if (Display.debug)
+			System.out.println("Loading...");
 		FileChooser dialog = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Sniper Level File(*.sniperLvl)",
 				"*.sniperLvl");
@@ -86,21 +90,34 @@ public class EditorScene extends Scene {
 	public void handleClick(double x, double y) {
 		int c = (int) (y / cellSize);
 		int r = (int) (x / cellSize);
-		grid.gridCode[r][c] = selectedBlockType;
-		world.addObject(grid, r, c);
+		if (r < grid.rows - 1 && c < grid.cols - 1 && r > 0 && c > 0) {
+			if (selectedBlockType == Bank.gridCode && world.constains(Bank.class)) {
+				grid.remove(Bank.gridCode);
+				world.remove(Bank.class);
+			}
+			grid.gridCode[r][c] = selectedBlockType;
+			world.addObject(grid, r, c);
+		}
 	}
 
-	public void handleMessage(String message) {
-		System.out.println(message);
-		if (message.equals("save"))
-			saveLevel();
-		if (message.equals("load"))
-			loadLevel();
+	public void handleMessage(String message, boolean dragging) {
+		if (Display.debug)
+			System.out.println(message);
+		if (!dragging) {
+			if (message.equals("save"))
+				saveLevel();
+			if (message.equals("load"))
+				loadLevel();
+		}
 
 		if (message.equals("brick"))
 			selectedBlockType = BrickBlock.gridCode;
 		if (message.equals("cover"))
 			selectedBlockType = CoverBlock.gridCode;
+		if (message.equals("empty"))
+			selectedBlockType = ' ';
+		if (message.equals("bank"))
+			selectedBlockType = Bank.gridCode;
 	}
 
 }

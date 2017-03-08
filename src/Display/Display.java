@@ -4,7 +4,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.application.Application;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.Cursor;
 import javafx.scene.*;

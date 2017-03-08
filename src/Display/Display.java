@@ -16,6 +16,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
 public class Display extends Application {
+	public final static boolean debug = false;
+
 	public final int mainMenue = 0;
 
 	GraphicsContext gc;
@@ -67,12 +69,20 @@ public class Display extends Application {
 		scene.setOnMouseMoved(e -> {
 			((Objects.Sniper) cursor).setPosition(e.getX(), e.getY());
 		});
+		scene.setOnMouseDragged(e -> {
+			((Objects.Sniper) cursor).setPosition(e.getX(), e.getY());
+			((Objects.Sniper) cursor).clicked = true;
+			ActiveScene.checkClick(cursor.x, cursor.y, true); // drags not
+																// allowed for
+																// scene switch
+		});
 		scene.setOnMousePressed(e -> {
 			((Objects.Sniper) cursor).clicked = true;
 			String msg;
-			if ((msg = ActiveScene.checkClick(cursor.x, cursor.y)) != null)
+			if ((msg = ActiveScene.checkClick(cursor.x, cursor.y, false)) != null)
 				handleSceneMessage(msg);
 		});
+
 	}
 
 	private void handleSceneMessage(String message) {
@@ -117,7 +127,8 @@ public class Display extends Application {
 		// gc.fillRect(0, 0, WIDTH, HEIGHT);
 		initialize(gc);
 		setHandlers(theScene);
-		theScene.setCursor(Cursor.NONE);
+		if (!debug)
+			theScene.setCursor(Cursor.NONE);
 		// Setup and start animation loop (Timeline)
 		KeyFrame kf = new KeyFrame(Duration.millis(1000 / FPS), e -> {
 			// update position

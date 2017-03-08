@@ -13,8 +13,10 @@ public class Sniper extends GameObject {
 	private double dScale;
 
 	public Sniper() {
-		img = new Image("objectAssets/reticle.gif");
-		scalef = 0.25;
+		size = 100;
+		img = new Image("objectAssets/reticle.gif", size, size, false, false);
+		scalef = 1;
+
 	}
 
 	public void update() {
@@ -48,6 +50,7 @@ public class Sniper extends GameObject {
 		// r += dr;
 		scalef += dScale;
 		super.update();
+		
 	}
 
 	public void setPosition(double x2, double y2) {

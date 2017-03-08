@@ -14,8 +14,6 @@ public class Scene {
 
 	double cursorX, cursorY;
 
-	boolean debug = true;
-
 	ArrayList<Button> buttonList;
 
 	protected Objects.Grid grid;
@@ -37,16 +35,17 @@ public class Scene {
 			((PlayScene) this).initChildScene();
 	}
 
-	public String checkClick(double x, double y) {
+	public String checkClick(double x, double y, boolean dragging) {
 		for (Button b : buttonList) {
 			if (checkHover(b)) {
 				if (!b.message.isEmpty()) {
-					System.out.println(b.message);
-					if (b.message.contains("SCENE"))
+					if (Display.debug)
+						System.out.println(b.message);
+					if (b.message.contains("SCENE") && !dragging)
 						return b.message.substring(b.message.indexOf(':') + 1);
 					else {
 						if (this instanceof EditorScene)
-							((EditorScene) this).handleMessage(b.message);
+							((EditorScene) this).handleMessage(b.message, dragging);
 						return null;
 					}
 				}
@@ -67,7 +66,7 @@ public class Scene {
 	protected void drawButtons() {
 		for (Button b : buttonList) {
 			b.render(gc);
-			if (debug) {
+			if (Display.debug) {
 				gc.setStroke(Color.BLACK);
 				BoundingBox bb = b.getBoundingBox();
 				gc.strokeRect(bb.getMinX(), bb.getMinY(), bb.getWidth(), bb.getHeight());

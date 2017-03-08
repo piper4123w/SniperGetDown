@@ -88,4 +88,13 @@ public class Grid {
 		}
 	}
 
+	public void remove(char code) {
+		for (int i = 0; i < cols; i++) {
+			for (int j = 0; j < rows; j++) {
+				if (gridCode[j][i] == code)
+					gridCode[j][i] = ' ';
+			}
+		}
+	}
+
 }

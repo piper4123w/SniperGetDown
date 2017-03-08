@@ -7,14 +7,14 @@ public class BrickBlock extends GameObject {
 	public final static char gridCode = 'B';
 
 	public BrickBlock(double x, double y, double s) {
-		size = s;
-		img = new Image("objectAssets/brick.gif", size, size, false, false);
-		this.x = x + (size / 2);// center x and y
-		this.y = y + (size / 2);
+		width = height = s;
+		img = new Image("objectAssets/brick.gif");
+		this.x = x + (s / 2);// center x and y
+		this.y = y + (s / 2);
 
 		scalef = 1;
 
-		boundingBox = new BoundingBox(x, y, size, size);
+		boundingBox = new BoundingBox(x, y, s, s);
 	}
 
 }

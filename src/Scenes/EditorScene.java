@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 import Display.Display;
-import Objects.Bank;
-import Objects.BrickBlock;
-import Objects.CoverBlock;
+import Objects.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -36,6 +34,8 @@ public class EditorScene extends Scene {
 				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "cover"));
 		buttonList.add(new Button(new Image("objectAssets/Bank.png"), Display.WIDTH - 5 * (menuBarSize / 2),
 				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "bank"));
+		buttonList.add(new Button(new Image("objectAssets/Van.png"), Display.WIDTH - 7 * (menuBarSize / 2),
+				Display.HEIGHT - (menuBarSize / 2), menuBarSize, menuBarSize, "van"));
 
 		grid = new Objects.Grid((int) (Display.WIDTH / cellSize), (int) ((Display.HEIGHT - menuBarSize) / cellSize),
 				cellSize);
@@ -121,6 +121,8 @@ public class EditorScene extends Scene {
 			selectedBlockType = ' ';
 		if (message.equals("bank"))
 			selectedBlockType = Bank.gridCode;
+		if (message.equals("van"))
+			selectedBlockType = Van.gridCode;
 	}
 
 }

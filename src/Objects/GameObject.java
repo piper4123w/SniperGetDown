@@ -12,7 +12,7 @@ public class GameObject extends Objects.World {
 	public Image img;
 
 	double scalef;
-	protected double size;
+	protected double height, width;
 
 	BoundingBox boundingBox;
 
@@ -24,17 +24,24 @@ public class GameObject extends Objects.World {
 		// affine.appendRotation(r);
 		// gc.setTransform(affine);
 		gc.save();
-		affine.appendTranslation(x - (size / 2), y - (size / 2));
+		affine.appendTranslation(x - (width / 2), y - (height / 2));
 		affine.appendRotation(r);
-		affine.appendScale(scalef, scalef);
+		affine.appendScale(scalef * (width / img.getWidth()), scalef * (height / img.getHeight()));
 		gc.setTransform(affine);
 		gc.drawImage(img, 0, 0);
+		gc.restore();
 
 		if (Display.Display.debug && boundingBox != null) {
+			gc.save();
+			affine = new Affine();
+			affine.appendTranslation(x - (width / 2), y - (height / 2));
+			affine.appendRotation(r);
+			gc.setTransform(affine);
 			gc.setStroke(Color.BLACK);
 			gc.strokeRect(0, 0, boundingBox.getWidth(), boundingBox.getHeight());
+			gc.restore();
+
 		}
-		gc.restore();
 
 	}
 

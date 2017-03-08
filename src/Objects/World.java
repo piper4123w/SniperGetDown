@@ -23,21 +23,30 @@ public class World {
 			for (int j = 0; j < grid.rows; j++) {
 				double x = j * grid.cellSize;
 				double y = i * grid.cellSize;
+				addToArray(x, y, grid.cellSize, grid.gridCode[j][i]);
 
-				switch (grid.gridCode[j][i]) {
-				case BrickBlock.gridCode:
-					worldArray.add(new BrickBlock(x, y, grid.cellSize));
-					break;
-				case CoverBlock.gridCode:
-					worldArray.add(new CoverBlock(x, y, grid.cellSize));
-					break;
-				case Bank.gridCode:
-					worldArray.add(new Bank(x, y, grid.cellSize));
-					break;
-				}
 			}
 		}
 		// debugPrint();
+	}
+
+	private void addToArray(double x, double y, double cellSize, char code) {
+		// TODO Auto-generated method stub
+		switch (code) {
+		case BrickBlock.gridCode:
+			worldArray.add(new BrickBlock(x, y, cellSize));
+			break;
+		case CoverBlock.gridCode:
+			worldArray.add(new CoverBlock(x, y, cellSize));
+			break;
+		case Bank.gridCode:
+			worldArray.add(new Bank(x, y, cellSize));
+			break;
+		case Van.gridCode:
+			worldArray.add(new Van(x, y, cellSize));
+			break;
+		}
+
 	}
 
 	public void debugPrint() {
@@ -58,17 +67,7 @@ public class World {
 	public void addObject(Grid grid, int r, int c) {
 		double y = c * grid.cellSize;
 		double x = r * grid.cellSize;
-		switch (grid.gridCode[r][c]) {
-		case BrickBlock.gridCode:
-			worldArray.add(new BrickBlock(x, y, grid.cellSize));
-			break;
-		case CoverBlock.gridCode:
-			worldArray.add(new CoverBlock(x, y, grid.cellSize));
-			break;
-		case Bank.gridCode:
-			worldArray.add(new Bank(x, y, grid.cellSize));
-			break;
-		}
+		addToArray(x, y, grid.cellSize, grid.gridCode[r][c]);
 	}
 
 	// checks the world for instances of the object

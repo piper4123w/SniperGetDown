@@ -7,10 +7,11 @@ public class CoverBlock extends GameObject {
 	public final static int gridCode = 'C';
 
 	public CoverBlock(double x, double y, double s) {
-		size = s;
-		img = new Image("objectAssets/cover.gif", size, size, false, false);
-		this.x = x + (size / 2);// center x and y
-		this.y = y + (size / 2);
+		width = s;
+		height = s;
+		img = new Image("objectAssets/cover.gif");
+		this.x = x + (width / 2);// center x and y
+		this.y = y + (height / 2);
 
 		scalef = 1;
 		// System.out.println(cellSize + " " + scalef);

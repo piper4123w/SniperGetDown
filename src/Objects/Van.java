@@ -3,13 +3,13 @@ package Objects;
 import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 
-public class Bank extends GameObject {
-	public final static char gridCode = 'S';
+public class Van extends GameObject {
+	public final static char gridCode = 'V';
 
-	public Bank(double x, double y, double s) {
-		height = s * 7;
-		width = s * 8;
-		img = new Image("objectAssets/Bank.png");
+	public Van(double x, double y, double s) {
+		height = s * 3;
+		width = s * 4;
+		img = new Image("objectAssets/Van.png");
 		this.x = x + (width / 2);
 		this.y = y + (height / 2);
 
@@ -17,5 +17,4 @@ public class Bank extends GameObject {
 
 		boundingBox = new BoundingBox(x, y, width, height);
 	}
-
 }

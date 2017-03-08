@@ -92,20 +92,18 @@ public class World {
 
 	}
 
-	public void remove(Grid grid, int r, int c) {
-		double x = c * grid.cellSize;
-		double y = c * grid.cellSize;
-		Class<?> cls = grid.getClassByPosition(r, c);
-		System.out.println(cls.getName());
-		Iterator<GameObject> iter = worldArray.iterator();
-
-		while (iter.hasNext()) {
-			GameObject o = iter.next();
-			if (o.getClass() == cls)
-				if (o.x == x && o.y == y)
-					iter.remove();
-
+	public void remove(Grid g, int r, int c) {
+		double x = (r * g.cellSize) + (g.cellSize / 2);
+		double y = (c * g.cellSize) + (g.cellSize / 2);
+		ArrayList<GameObject> tmp = new ArrayList<GameObject>();
+		for (GameObject o : worldArray) {
+			if (o.x != x && o.y != y) {
+				tmp.add(o);
+				System.out.println("kept " + o.x + ',' + o.y + ':' + x + "," + y);
+			} else
+				System.out.println("removed " + o.x + ',' + o.y + ':' + x + "," + y);
 		}
+		worldArray = tmp;
 
 	}
 

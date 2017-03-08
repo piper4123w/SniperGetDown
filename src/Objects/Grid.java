@@ -99,7 +99,7 @@ public class Grid {
 
 	public Class<?> getClassByPosition(int r, int c) {
 		char code = gridCode[r][c];
-		System.out.println("code:" + code);
+		System.out.println("code:" + gridCode[r][c]);
 		switch (code) {
 		case BrickBlock.gridCode:
 			return BrickBlock.class;

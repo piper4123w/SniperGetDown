@@ -106,16 +106,16 @@ public class EditorScene extends Scene {
 			if (selectedBlockType == Bank.gridCode && world.constains(Bank.class)) {
 				grid.remove(Bank.gridCode);
 				world.removeAll(Bank.class);
-			}
-			if (selectedBlockType == Van.gridCode && world.constains(Van.class)) {
+			} else if (selectedBlockType == Van.gridCode && world.constains(Van.class)) {
 				grid.remove(Van.gridCode);
 				world.removeAll(Van.class);
+			} else {
+				if (selectedBlockType == 0)
+					world.remove(grid, r, c);
+				else
+					world.addObject(grid, r, c);
+				grid.gridCode[r][c] = selectedBlockType;
 			}
-			grid.gridCode[r][c] = selectedBlockType;
-			if (selectedBlockType == 0)
-				world.remove(grid,r,c);
-			else
-				world.addObject(grid, r, c);
 		}
 	}
 

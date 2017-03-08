@@ -44,7 +44,7 @@ public class EditorScene extends Scene {
 
 	}
 
-	public void loadLevel() {
+	public void loadLevel() { // opens file dialog for loading a new level
 		if (Display.debug)
 			System.out.println("Loading...");
 		FileChooser dialog = new FileChooser();
@@ -60,7 +60,7 @@ public class EditorScene extends Scene {
 		world.populateWorld(grid);
 	}
 
-	public void saveLevel() {
+	public void saveLevel() { //opens a file dialog for saving the created level
 		FileChooser dialog = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Sniper Level File(*.sniperLvl)",
 				"*.sniperLvl");

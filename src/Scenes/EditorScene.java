@@ -20,6 +20,8 @@ public class EditorScene extends Scene {
 	char selectedBlockType = 'B';
 
 	public void initChildScene() {
+		// inits buttons for the scene, as well as background and any necessarry
+		// data structs
 		backGround = Color.DARKSLATEGRAY;
 		buttonList.add(new Button(new Image("menuItems/save.gif"), menuBarSize / 2, Display.HEIGHT - (menuBarSize / 2),
 				menuBarSize, menuBarSize, "save"));
@@ -60,7 +62,8 @@ public class EditorScene extends Scene {
 		world.populateWorld(grid);
 	}
 
-	public void saveLevel() { //opens a file dialog for saving the created level
+	public void saveLevel() { // opens a file dialog for saving the created
+								// level
 		FileChooser dialog = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Sniper Level File(*.sniperLvl)",
 				"*.sniperLvl");

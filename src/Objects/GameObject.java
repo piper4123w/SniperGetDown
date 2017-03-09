@@ -18,11 +18,6 @@ public class GameObject extends Objects.World {
 
 	public void render(GraphicsContext gc) {
 		Affine affine = new Affine();
-		// gc.save();
-		// affine.appendScale(scalef, scalef);
-		// affine.appendTranslation(x / scalef, y / scalef);
-		// affine.appendRotation(r);
-		// gc.setTransform(affine);
 		gc.save();
 		affine.appendTranslation(x - (width / 2), y - (height / 2));
 		affine.appendRotation(r);

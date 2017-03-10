@@ -2,9 +2,9 @@ package Scenes;
 
 import java.io.File;
 
+import Actor.Robber;
 import Display.Display;
 import Objects.Bank;
-import Objects.Robber;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
@@ -35,7 +35,6 @@ public class PlayScene extends Scene {
 
 	public void addPlayers() {
 		Bank b = (Bank) world.getFirstObject(Bank.class);
-		world.addObject(new Robber(1, b.x, b.y, getGrid().cellSize));
 		System.out.println("Player 1 placed at " + b.x + ',' + b.y);
 	}
 

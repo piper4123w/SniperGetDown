@@ -7,6 +7,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.Cursor;
 import javafx.scene.*;
+
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
+import java.util.ArrayList;
+
+import Actor.Actor;
+import Actor.Sniper;
 import Scenes.EditorScene;
 import Scenes.LevelSelect;
 import Scenes.MainMenue;
@@ -29,17 +36,21 @@ public class Display extends Application {
 
 	public Scenes.Scene ActiveScene;
 
-	public Objects.GameObject cursor;
+	public ArrayList<Actor> actorList;
+
+	public Sniper cursor;
 
 	double mouseX, mouseY;
 
 	public static Stage theStage;
 
+	ArrayList<String> input = new ArrayList<String>();
+
 	void initialize(GraphicsContext gc) {
 		ActiveScene = new Scenes.MainMenue();
 		((MainMenue) ActiveScene).initScene(gc, this);
 
-		cursor = new Objects.Sniper();
+		cursor = new Sniper();
 	}
 
 	public void update() {
@@ -52,13 +63,10 @@ public class Display extends Application {
 		if (ActiveScene instanceof PlayScene)
 			((PlayScene) ActiveScene).updateScene(cursor.x, cursor.y);
 		cursor.update();
-
+		if (debug && !input.isEmpty())
+			System.out.println(input.toString());
 		// ((Objects.Sniper) cursor).update();
 
-	}
-
-	public void render(GraphicsContext gc) {
-		cursor.render(gc);
 	}
 
 	public static void main(String[] args) {
@@ -67,22 +75,38 @@ public class Display extends Application {
 
 	public void setHandlers(Scene scene) {
 		scene.setOnMouseMoved(e -> {
-			((Objects.Sniper) cursor).setPosition(e.getX(), e.getY());
+			((Sniper) cursor).setPosition(e.getX(), e.getY());
 		});
 		scene.setOnMouseDragged(e -> {
-			((Objects.Sniper) cursor).setPosition(e.getX(), e.getY());
-			((Objects.Sniper) cursor).clicked = true;
+			((Sniper) cursor).setPosition(e.getX(), e.getY());
+			((Sniper) cursor).clicked = true;
 			ActiveScene.checkClick(cursor.x, cursor.y, true); // drags not
 																// allowed for
 																// scene switch
 		});
 		scene.setOnMousePressed(e -> {
-			((Objects.Sniper) cursor).clicked = true;
+			((Sniper) cursor).clicked = true;
 			String msg;
 			if ((msg = ActiveScene.checkClick(cursor.x, cursor.y, false)) != null)
 				handleSceneMessage(msg);
 		});
 
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			public void handle(KeyEvent e) {
+				String code = e.getCode().toString();
+				// only add once... prevent duplicates
+				if (!input.contains(code))
+					input.add(code);
+			}
+		});
+
+		scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+			public void handle(KeyEvent e) {
+				String code = e.getCode().toString();
+				input.remove(code);
+			}
+		});
 	}
 
 	private void handleSceneMessage(String message) {
@@ -135,7 +159,9 @@ public class Display extends Application {
 			update();
 			// draw frame
 
-			render(gc);
+			cursor.render(gc);
+			for (Actor a : actorList)
+				a.input = input;
 		});
 
 		Timeline mainLoop = new Timeline(kf);

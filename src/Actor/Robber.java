@@ -1,13 +1,15 @@
-package Objects;
+package Actor;
 
 import java.util.ArrayList;
 
+import Objects.GameObject;
 import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 
-public class Robber extends GameObject {
+public class Robber extends Actor {
 	ArrayList<Image> sprites;
 	String[] uris = { "idle_blink.png", "idle.png", "running1.png", "running2.png", "running3.png" };
+	double headX, headY, headR;
 
 	public Robber(int playerNum, double x, double y, double s) {
 		sprites = new ArrayList<Image>(5);
@@ -25,11 +27,9 @@ public class Robber extends GameObject {
 		this.y = 500;
 
 		this.width = s;
-		this.height = 2*s;
+		this.height = 2 * s;
 
 		scalef = 1;
-
-		boundingBox = new BoundingBox(x, y, width, height);
 	}
 
 	public void loadSprites(String s) {
@@ -38,11 +38,16 @@ public class Robber extends GameObject {
 		}
 	}
 
-	public void update() {
-
+	public double getHeadX() {
+		return headX;
 	}
 
-	public void drawActor() {
-
+	public double getHeadY() {
+		return headY;
 	}
+
+	public double getHeadR() {
+		return headR;
+	}
+
 }

@@ -12,7 +12,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
 
-import Actor.Actor;
+import Actor.Robber;
 import Actor.Sniper;
 import Scenes.EditorScene;
 import Scenes.LevelSelect;
@@ -31,20 +31,16 @@ public class Display extends Application {
 
 	final String appName = "Sniper! Get Down!";
 	final int FPS = 30; // frames per second
-	public final static int WIDTH = 1000;
-	public final static int HEIGHT = 750;
+	public final static int WIDTH = 1500;
+	public final static int HEIGHT = 1050;
 
 	public Scenes.Scene ActiveScene;
-
-	public ArrayList<Actor> actorList;
 
 	public Sniper cursor;
 
 	double mouseX, mouseY;
 
 	public static Stage theStage;
-
-	ArrayList<String> input = new ArrayList<String>();
 
 	void initialize(GraphicsContext gc) {
 		ActiveScene = new Scenes.MainMenue();
@@ -63,8 +59,8 @@ public class Display extends Application {
 		if (ActiveScene instanceof PlayScene)
 			((PlayScene) ActiveScene).updateScene(cursor.x, cursor.y);
 		cursor.update();
-		if (debug && !input.isEmpty())
-			System.out.println(input.toString());
+		if (debug && !ActiveScene.input.isEmpty())
+			System.out.println(ActiveScene.input.toString());
 		// ((Objects.Sniper) cursor).update();
 
 	}
@@ -95,8 +91,8 @@ public class Display extends Application {
 			public void handle(KeyEvent e) {
 				String code = e.getCode().toString();
 				// only add once... prevent duplicates
-				if (!input.contains(code))
-					input.add(code);
+				if (!ActiveScene.input.contains(code))
+					ActiveScene.input.add(code);
 			}
 		});
 
@@ -104,7 +100,7 @@ public class Display extends Application {
 
 			public void handle(KeyEvent e) {
 				String code = e.getCode().toString();
-				input.remove(code);
+				ActiveScene.input.remove(code);
 			}
 		});
 	}
@@ -160,8 +156,6 @@ public class Display extends Application {
 			// draw frame
 
 			cursor.render(gc);
-			for (Actor a : actorList)
-				a.input = input;
 		});
 
 		Timeline mainLoop = new Timeline(kf);

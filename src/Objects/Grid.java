@@ -18,7 +18,7 @@ public class Grid {
 	public Grid() {
 		rows = 1;
 		cols = 1;
-		cellSize = 20;
+		cellSize = 30;
 
 	}
 

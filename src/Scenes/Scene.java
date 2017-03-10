@@ -2,11 +2,11 @@ package Scenes;
 
 import java.util.ArrayList;
 
+import Actor.Robber;
 import Display.Display;
 import javafx.geometry.BoundingBox;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Affine;
 
 public class Scene {
 	public GraphicsContext gc;
@@ -15,6 +15,8 @@ public class Scene {
 	double cursorX, cursorY;
 
 	ArrayList<Button> buttonList;
+	ArrayList<Robber> robberList;
+	public ArrayList<String> input;
 
 	protected Objects.Grid grid;
 	Objects.World world;
@@ -25,6 +27,7 @@ public class Scene {
 		this.gc = gc;
 		this.display = d;
 		buttonList = new ArrayList<Button>();
+		input = new ArrayList<String>();
 		if (this instanceof MainMenue)
 			((MainMenue) this).initChildScene();
 		if (this instanceof EditorScene)
@@ -85,6 +88,9 @@ public class Scene {
 		}
 		if (world != null)
 			world.drawWorld(gc);
+		if(robberList != null && !robberList.isEmpty())
+			for(Robber a : robberList)
+				a.update(input, world, gc);
 		drawButtons();
 
 	}

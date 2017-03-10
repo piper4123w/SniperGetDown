@@ -14,7 +14,7 @@ public class BrickBlock extends GameObject {
 
 		scalef = 1;
 
-		boundingBox = new BoundingBox(x, y, s, s);
+		boundingBox = new BoundingBox(this.x - (width/2), this.y - (width/2), width, height);
 	}
 
 }

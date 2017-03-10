@@ -14,10 +14,11 @@ public class GameObject extends Objects.World {
 	double scalef;
 	protected double height, width;
 
-	BoundingBox boundingBox;
+	public BoundingBox boundingBox;
 
 	public void render(GraphicsContext gc) {
 		Affine affine = new Affine();
+		
 		gc.save();
 		affine.appendTranslation(x - (width / 2), y - (height / 2));
 		affine.appendRotation(r);
@@ -27,14 +28,8 @@ public class GameObject extends Objects.World {
 		gc.restore();
 
 		if (Display.Display.debug && boundingBox != null) {
-			gc.save();
-			affine = new Affine();
-			affine.appendTranslation(x - (width / 2), y - (height / 2));
-			affine.appendRotation(r);
-			gc.setTransform(affine);
 			gc.setStroke(Color.BLACK);
-			gc.strokeRect(0, 0, boundingBox.getWidth(), boundingBox.getHeight());
-			gc.restore();
+			gc.strokeRect(boundingBox.getMinX(), boundingBox.getMinY(), boundingBox.getWidth(), boundingBox.getHeight());
 
 		}
 

@@ -15,6 +15,6 @@ public class CoverBlock extends GameObject {
 
 		scalef = 1;
 		// System.out.println(cellSize + " " + scalef);
-		boundingBox = new BoundingBox(x, y, img.getWidth(), img.getHeight());
+		boundingBox = new BoundingBox(x, y, width, height);
 	}
 }

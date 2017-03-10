@@ -97,7 +97,7 @@ public class World {
 		double y = (c * g.cellSize) + (g.cellSize / 2);
 		ArrayList<GameObject> tmp = new ArrayList<GameObject>();
 		for (GameObject o : worldArray) {
-			if (o.x != x && o.y != y) {
+			if (o.x != x || o.y != y) {
 				tmp.add(o);
 				System.out.println("kept " + o.x + ',' + o.y + ':' + x + "," + y);
 			} else
@@ -105,6 +105,18 @@ public class World {
 		}
 		worldArray = tmp;
 
+	}
+
+	public GameObject getFirstObject(Class<?> class1) {
+		for (GameObject o : worldArray)
+			if (o instanceof Bank)
+				return o;
+
+		return null;
+	}
+
+	public void addObject(GameObject obj) {
+		worldArray.add(obj);
 	}
 
 }

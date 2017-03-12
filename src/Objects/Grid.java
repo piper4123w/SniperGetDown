@@ -3,9 +3,6 @@ package Objects;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-
-import javafx.scene.canvas.GraphicsContext;
 
 public class Grid {
 	public int rows;
@@ -18,7 +15,7 @@ public class Grid {
 	public Grid() {
 		rows = 1;
 		cols = 1;
-		cellSize = 30;
+		cellSize = 25;
 
 	}
 

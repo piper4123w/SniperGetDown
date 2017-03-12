@@ -10,9 +10,6 @@ import javafx.scene.*;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
-import java.util.ArrayList;
-
-import Actor.Robber;
 import Actor.Sniper;
 import Scenes.EditorScene;
 import Scenes.LevelSelect;
@@ -31,8 +28,8 @@ public class Display extends Application {
 
 	final String appName = "Sniper! Get Down!";
 	final int FPS = 30; // frames per second
-	public final static int WIDTH = 1500;
-	public final static int HEIGHT = 1050;
+	public final static int WIDTH = 1250;
+	public final static int HEIGHT = 800;
 
 	public Scenes.Scene ActiveScene;
 

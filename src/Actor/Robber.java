@@ -88,6 +88,8 @@ public class Robber extends Actor {
 				touchingGround = true;
 			if (o.boundingBox.getMaxX() <= boundingBox.getMinX() && o instanceof BrickBlock)
 				touchingLeftWall = true;
+			if (o.boundingBox.getMinX() >= boundingBox.getMaxX() && o instanceof BrickBlock)
+				touchingRightWall = true;
 		}
 		if (touchingGround)
 			dy = 0;
@@ -95,6 +97,7 @@ public class Robber extends Actor {
 			if (dy < TERMINAL_VELOCITY) // terminal velocity falling
 				dy++;
 		}
+
 	}
 
 	private void stop() {

@@ -1,3 +1,8 @@
+/* Author: Kyle Lawson
+ * 
+ * Description: Main class, handles initialization and control of the scenes and window components
+ */
+
 package Display;
 
 import javafx.stage.Stage;
@@ -11,10 +16,6 @@ import javafx.scene.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import Actor.Sniper;
-import Scenes.EditorScene;
-import Scenes.LevelSelect;
-import Scenes.MainMenue;
-import Scenes.PlayScene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -41,20 +42,13 @@ public class Display extends Application {
 
 	void initialize(GraphicsContext gc) {
 		ActiveScene = new Scenes.MainMenue();
-		((MainMenue) ActiveScene).initScene(gc, this);
-
+		ActiveScene.initScene(gc, this);
+		
 		cursor = new Sniper();
 	}
 
 	public void update() {
-		if (ActiveScene instanceof MainMenue)
-			((MainMenue) ActiveScene).updateScene(cursor.x, cursor.y);
-		if (ActiveScene instanceof EditorScene)
-			((EditorScene) ActiveScene).updateScene(cursor.x, cursor.y);
-		if (ActiveScene instanceof LevelSelect)
-			((LevelSelect) ActiveScene).updateScene(cursor.x, cursor.y);
-		if (ActiveScene instanceof PlayScene)
-			((PlayScene) ActiveScene).updateScene(cursor.x, cursor.y);
+		ActiveScene.updateScene(cursor.x, cursor.y);
 		cursor.update();
 		if (debug && !ActiveScene.input.isEmpty())
 			System.out.println(ActiveScene.input.toString());

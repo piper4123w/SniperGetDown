@@ -39,7 +39,6 @@ public class PlayScene extends Scene {
 
 	public void addPlayers() {
 		Bank b = (Bank) world.getFirstObject(Bank.class);
-		System.out.println("Player 1 placed at " + b.x + ',' + b.y);
 		robberList.add(new Robber(1, b.x, b.y, grid.cellSize));
 	}
 

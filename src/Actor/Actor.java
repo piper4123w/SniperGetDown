@@ -1,3 +1,9 @@
+/*
+ * Author: Kyle Lawson
+ * 
+ * Description: Super class for Actors, similar to game object but containing different bounding box definitions
+ */
+
 package Actor;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -15,21 +21,24 @@ public class Actor {
 
 	public BoundingBox boundingBox;
 
+	// renders the Actor image
 	public void render(GraphicsContext gc) {
 		Affine affine = new Affine();
 		gc.save();
-		affine.appendTranslation(x - (width / 2), y - (height / 2));
+		affine.appendTranslation(x, y);
+
 		affine.appendRotation(r);
 		affine.appendScale(scalef * (width / img.getWidth()), scalef * (height / img.getHeight()));
 		gc.setTransform(affine);
-		gc.drawImage(img, 0, 0);
+		gc.drawImage(img, 0 - (img.getWidth() / 2), 0 - (img.getHeight() / 2));
 		gc.restore();
 	}
 
+	// updates location data based on velocities
 	public void update() {
 		r += dr;
 		x += dx;
 		y += dy;
-		
+
 	}
 }

@@ -1,3 +1,7 @@
+/* Author: Kyle Lawson
+ * 
+ * Description: Level Editor Scene. Used for editing and creating .sniperLevel files
+ */
 package Scenes;
 
 import java.io.BufferedWriter;
@@ -83,7 +87,7 @@ public class EditorScene extends Scene {
 		if (file != null) {
 			try {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-				String levelString = grid.rows + "," + grid.cols + ":" + grid.cellSize + "\n";
+				String levelString = grid.rows + "," + grid.cols + ":" + (int)grid.cellSize + "\n";
 				for (int i = 0; i < grid.cols; i++) {
 					for (int j = 0; j < grid.rows; j++) {
 						levelString += (grid.gridCode[j][i]);

@@ -1,3 +1,9 @@
+/*
+ * Author: Kyle Lawson
+ * 
+ * Description: Class handles grid layout for levels. used in both editor mode and loading play mode
+ */
+
 package Objects;
 
 import java.io.BufferedReader;
@@ -34,17 +40,16 @@ public class Grid {
 			gridCode[0][i] = BrickBlock.gridCode;
 			gridCode[rows - 1][i] = BrickBlock.gridCode; // place cement
 															// blocks in borders
-			// cement
-			// blocks in borders
+
 		}
 		for (int j = 0; j < rows; j++) {
 			gridCode[j][0] = BrickBlock.gridCode;
 			gridCode[j][cols - 1] = BrickBlock.gridCode;
 
 		}
-		// debugPrintGrid();
 	}
 
+	// debug print method that prints grid char code to console
 	public void debugPrintGrid() {
 		for (int i = 0; i < cols; i++) {
 			for (int j = 0; j < rows; j++) {
@@ -54,23 +59,30 @@ public class Grid {
 		}
 	}
 
+	// parses string input into the grid code
 	public void stringToGrid(String levelString) {
 		int lineNum = 0;
 		String lvlAr[] = levelString.split("\n");
+		// splits the file header that determines rows, cols, and cell size
 		this.rows = Integer.parseInt(lvlAr[0].substring(0, lvlAr[0].indexOf(',')));
 		this.cols = Integer.parseInt(lvlAr[0].substring(lvlAr[0].indexOf(',') + 1, lvlAr[0].indexOf(':')));
-		System.out.println(rows + " " + cols);
-		cellSize = Integer.parseInt(lvlAr[0].substring(lvlAr[0].indexOf(':')+1));
-		System.out.println(cellSize);
+		cellSize = Integer.parseInt(lvlAr[0].substring(lvlAr[0].indexOf(':') + 1));
+
+		// fills the grid
 		this.gridCode = new char[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				this.gridCode[i][j] = lvlAr[j + 1].charAt(i);
 			}
 		}
-		debugPrintGrid();
+		if (Display.Display.debug) {
+			System.out.println(rows + "," + cols + ":" + cellSize);
+			debugPrintGrid();
+		}
+
 	}
 
+	// opens file stream and inputs its code into grid
 	public void fileToGrid(File file) {
 		if (file != null) {
 			try {
@@ -87,6 +99,7 @@ public class Grid {
 		}
 	}
 
+	// replaces a char at the r,c location with empty space
 	public void remove(char code) {
 		for (int i = 0; i < cols; i++) {
 			for (int j = 0; j < rows; j++) {
@@ -96,6 +109,7 @@ public class Grid {
 		}
 	}
 
+	// returns class type in grid location
 	public Class<?> getClassByPosition(int r, int c) {
 		char code = gridCode[r][c];
 		System.out.println("code:" + gridCode[r][c]);

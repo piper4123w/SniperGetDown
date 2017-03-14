@@ -1,3 +1,8 @@
+/*
+ * Author: Kyle Lawson
+ * 
+ * Description: Sub Class for Bank object (start position for robbers)
+ */
 package Objects;
 
 import javafx.geometry.BoundingBox;

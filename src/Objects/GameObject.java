@@ -1,3 +1,9 @@
+/*
+ * Author: Kyle Lawson
+ * 
+ * Description: Superclass for all in game objects not associated with a player. Contains update and render methods as well as location and physical data
+ */
+
 package Objects;
 
 import javafx.geometry.BoundingBox;
@@ -16,9 +22,10 @@ public class GameObject extends Objects.World {
 
 	public BoundingBox boundingBox;
 
+	// render method for object image
 	public void render(GraphicsContext gc) {
 		Affine affine = new Affine();
-		
+
 		gc.save();
 		affine.appendTranslation(x - (width / 2), y - (height / 2));
 		affine.appendRotation(r);
@@ -27,14 +34,17 @@ public class GameObject extends Objects.World {
 		gc.drawImage(img, 0, 0);
 		gc.restore();
 
+		// displays the bounding box if in debug mode
 		if (Display.Display.debug && boundingBox != null) {
 			gc.setStroke(Color.BLACK);
-			gc.strokeRect(boundingBox.getMinX(), boundingBox.getMinY(), boundingBox.getWidth(), boundingBox.getHeight());
+			gc.strokeRect(boundingBox.getMinX(), boundingBox.getMinY(), boundingBox.getWidth(),
+					boundingBox.getHeight());
 
 		}
 
 	}
 
+	// updates location and rotation based on velocity
 	public void update() {
 		r += dr;
 		x += dx;

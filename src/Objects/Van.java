@@ -1,3 +1,9 @@
+/*
+ * Author: Kyle Lawson
+ * 
+ * Description: Sub Class for Van Object
+ */
+
 package Objects;
 
 import javafx.geometry.BoundingBox;

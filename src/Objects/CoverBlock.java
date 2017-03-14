@@ -1,3 +1,9 @@
+/*
+ * Author: Kyle Lawson
+ * 
+ * Description: subclass for cover block item. Item allows robbers to avoid sniper fire when behind
+ */
+
 package Objects;
 
 import javafx.geometry.BoundingBox;

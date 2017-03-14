@@ -1,3 +1,9 @@
+/*
+ * Author: Kyle Lawson
+ * 
+ * Description: Sub class for brick block item. Object used for main construction of floors and walls
+ */
+
 package Objects;
 
 import javafx.geometry.BoundingBox;
@@ -14,7 +20,7 @@ public class BrickBlock extends GameObject {
 
 		scalef = 1;
 
-		boundingBox = new BoundingBox(this.x - (width/2), this.y - (width/2), width, height);
+		boundingBox = new BoundingBox(this.x - (width / 2), this.y - (width / 2), width, height);
 	}
 
 }

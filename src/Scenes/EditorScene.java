@@ -13,7 +13,7 @@ import javafx.stage.FileChooser;
 public class EditorScene extends Scene {
 
 	final double menuBarSize = 50;
-	final double cellSize = 20;
+	final double cellSize = 25;
 
 	char selectedBlockType = 'B';
 
@@ -83,7 +83,7 @@ public class EditorScene extends Scene {
 		if (file != null) {
 			try {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-				String levelString = grid.rows + "," + grid.cols + "\n";
+				String levelString = grid.rows + "," + grid.cols + ":" + grid.cellSize + "\n";
 				for (int i = 0; i < grid.cols; i++) {
 					for (int j = 0; j < grid.rows; j++) {
 						levelString += (grid.gridCode[j][i]);

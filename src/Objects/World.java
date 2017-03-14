@@ -24,7 +24,6 @@ public class World {
 				double x = j * grid.cellSize;
 				double y = i * grid.cellSize;
 				addToArray(x, y, grid.cellSize, grid.gridCode[j][i]);
-
 			}
 		}
 		// debugPrint();

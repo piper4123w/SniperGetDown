@@ -50,7 +50,7 @@ public class Robber extends Actor {
 
 		if (playerNumber == 1) {
 			img = sprites.get(0);
-			if (input.contains("W"))
+			if (input.contains("W") && touchingGround)
 				jump();
 			else if (input.contains("S"))
 				slide();

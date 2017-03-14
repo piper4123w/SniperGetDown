@@ -15,7 +15,7 @@ public class Grid {
 	public Grid() {
 		rows = 1;
 		cols = 1;
-		cellSize = 25;
+		cellSize = 20;
 
 	}
 
@@ -58,8 +58,10 @@ public class Grid {
 		int lineNum = 0;
 		String lvlAr[] = levelString.split("\n");
 		this.rows = Integer.parseInt(lvlAr[0].substring(0, lvlAr[0].indexOf(',')));
-		this.cols = Integer.parseInt(lvlAr[0].substring(lvlAr[0].indexOf(',') + 1, lvlAr[0].length()));
+		this.cols = Integer.parseInt(lvlAr[0].substring(lvlAr[0].indexOf(',') + 1, lvlAr[0].indexOf(':')));
 		System.out.println(rows + " " + cols);
+		cellSize = Integer.parseInt(lvlAr[0].substring(lvlAr[0].indexOf(':')+1));
+		System.out.println(cellSize);
 		this.gridCode = new char[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {

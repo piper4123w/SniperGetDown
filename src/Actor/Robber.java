@@ -18,7 +18,7 @@ import javafx.geometry.BoundingBox;
 
 public class Robber extends Actor {
 	ArrayList<Image> sprites;
-	String[] uris = { "idle_blink.png", "idle.png", "running1.png", "running2.png", "running3.png" };
+	String[] uris = { "idle_blink.png", "idle.png", "running1.png", "running2.png", "running3.png", "crawl1.png" };
 
 	String UP, DOWN, LEFT, RIGHT;
 	double headX, headY, headR;
@@ -132,6 +132,8 @@ public class Robber extends Actor {
 		touchingRightWall = false;
 		touchingLeftWall = false;
 		for (GameObject o : futureCollisions) {
+			// TODO: figure out how to make robbers not be able to climb walls
+
 			// if future box will collide with the ground
 			if (o instanceof BrickBlock && o.boundingBox.getMinY() >= boundingBox.getMaxY()
 					&& o.boundingBox.getMinY() <= futureBox.getMaxY()) {

@@ -40,6 +40,7 @@ public class PlayScene extends Scene {
 	public void addPlayers() {
 		Bank b = (Bank) world.getFirstObject(Bank.class);
 		robberList.add(new Robber(1, b.x, b.y, grid.cellSize));
+		//robberList.add(new Robber(2, b.x, b.y, grid.cellSize));
 	}
 
 }

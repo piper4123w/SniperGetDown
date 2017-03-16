@@ -18,7 +18,9 @@ import javafx.geometry.BoundingBox;
 
 public class Robber extends Actor {
 	ArrayList<Image> sprites;
-	String[] uris = { "idle_blink.png", "idle.png", "running1.png", "running2.png", "running3.png", "crawl1.png" };
+	String[] uris = { "idle.png" };// ",idle_blink.png", "running1.png",
+									// "running2.png", "running3.png",
+									// "crawl1.png" };
 
 	String UP, DOWN, LEFT, RIGHT;
 	double headX, headY, headR;
@@ -95,8 +97,14 @@ public class Robber extends Actor {
 			boundingBox = new BoundingBox(x - width / 4, y - (height / 2), width / 2, height);
 			futureBox = new BoundingBox((x - width / 4) + dx, (y - (height / 2)) + dy, width / 2, height);
 		} else {
-			boundingBox = new BoundingBox(x - width / 4, y, width / 2, height / 2);
-			futureBox = new BoundingBox((x - width / 4) + dx, y + dy, width / 2, height / 2);
+			if (sliding || crawling) {
+				boundingBox = new BoundingBox(x - height / 2, y, height, height / 2);
+				futureBox = new BoundingBox((x - height / 2) + dx, y + dy, height, height / 2);
+			} else {
+				boundingBox = new BoundingBox(x - width / 4, y, width / 2, height / 2);
+				futureBox = new BoundingBox((x - width / 4) + dx, y + dy, width / 2, height / 2);
+			}
+
 		}
 		if (Display.Display.debug) {
 			if (boundingBox != null) {
@@ -170,18 +178,21 @@ public class Robber extends Actor {
 
 	}
 
+	// handles logic when coming to a stop/no movement inputs
 	private void stop() {
 		if (dx > 0) {
 			if (dx - 1 > 0)
 				dx--;
 			else
 				dx = 0;
-		}
-		if (dx < 0) {
+		} else if (dx < 0) {
 			if (dx + 1 < 0)
 				dx++;
 			else
 				dx = 0;
+		}
+		if (ducking && dx == 0) {
+			crawling = sliding = false;
 		}
 	}
 

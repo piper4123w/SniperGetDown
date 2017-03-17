@@ -59,6 +59,8 @@ public class Scene {
 					else {
 						if (this instanceof EditorScene)
 							((EditorScene) this).handleMessage(b.message, dragging);
+						if (this instanceof PlayScene)
+							((PlayScene) this).handleMessage(b.message, dragging);
 							//special handler for editor scene
 						return null;
 					}

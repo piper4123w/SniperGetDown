@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import Actor.Robber;
 import Display.Display;
 import Objects.Bank;
+import Objects.BrickBlock;
 import javafx.scene.paint.Color;
 
 public class PlayScene extends Scene {
@@ -40,7 +41,18 @@ public class PlayScene extends Scene {
 	public void addPlayers() {
 		Bank b = (Bank) world.getFirstObject(Bank.class);
 		robberList.add(new Robber(1, b.x, b.y, grid.cellSize));
-		//robberList.add(new Robber(2, b.x, b.y, grid.cellSize));
+		// robberList.add(new Robber(2, b.x, b.y, grid.cellSize));
+	}
+
+	public void handleMessage(String message, boolean dragging) {
+		if (Display.debug)
+			System.out.println(message);
+		if (!dragging) {
+			if (message.equals("pause"))
+				while (true)
+					;
+		}
+
 	}
 
 }

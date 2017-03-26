@@ -12,6 +12,7 @@ import javafx.scene.transform.Affine;
 import javafx.geometry.BoundingBox;
 
 public class Actor {
+	String dir = "right";
 	public double x, y;
 	double dx, dy, r, dr;
 	public Image img;
@@ -30,7 +31,10 @@ public class Actor {
 		affine.appendRotation(r);
 		affine.appendScale(scalef * (width / img.getWidth()), scalef * (height / img.getHeight()));
 		gc.setTransform(affine);
-		gc.drawImage(img, 0 - (img.getWidth() / 2), 0 - (img.getHeight() / 2));
+		if (dir.equals("right"))
+			gc.drawImage(img, 0 - (img.getWidth() / 2), 0 - (img.getHeight() / 2), img.getWidth(), img.getHeight());
+		else
+			gc.drawImage(img, 0 + (img.getWidth() / 2), 0 - (img.getHeight() / 2), -img.getWidth(), img.getHeight());
 		gc.restore();
 	}
 

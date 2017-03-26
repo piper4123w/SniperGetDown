@@ -18,9 +18,9 @@ import javafx.geometry.BoundingBox;
 
 public class Robber extends Actor {
 	ArrayList<Image> sprites;
-	String[] uris = { "idle.png" };// ",idle_blink.png", "running1.png",
-									// "running2.png", "running3.png",
-									// "crawl1.png" };
+	String[] uris = { "idle.png", "jump.png", "running1.png", "running2.png", "running3.png", "crawl1.png",
+			"crawl2.png", "dive.png", "idle_blink.png" };
+	int spriteCycler = 4;
 
 	String UP, DOWN, LEFT, RIGHT;
 	double headX, headY, headR;
@@ -59,11 +59,14 @@ public class Robber extends Actor {
 			RIGHT = "NUMPAD6";
 			break;
 		}
+
+		img = sprites.get(1);
+
 		this.x = x;
 		this.y = Math.round(y);
 
-		this.width = s;
-		this.height = 2 * s;
+		this.width = s * 0.9;
+		this.height = 2 * s * 0.9;
 
 		// body bounding box used for detecting walking/jumping/colliding with
 		// game objects
@@ -75,9 +78,8 @@ public class Robber extends Actor {
 	// updates robber based on player inputs, collisions, and velocities
 	public void update(ArrayList<String> input, World world, GraphicsContext gc) {
 		setCollisions(world);
-		// sets robber collision booleans for movement logic
+		// sets up a list of current and future collisions
 
-		img = sprites.get(0);
 		ducking = false;
 		if (input.contains(UP) && !input.contains(DOWN) && touchingGround)
 			jump();
@@ -125,26 +127,23 @@ public class Robber extends Actor {
 	// sets collision booleans for game logic
 	private void setCollisions(World world) {
 		collisions = new ArrayList<GameObject>();
-		ArrayList<GameObject> futureCollisions = new ArrayList<GameObject>();
-		// list of game objects robber is touching or going to touch at current
-		// speed
+
 		for (GameObject o : world.worldArray) {
-			if (o.boundingBox.intersects(boundingBox))
+			// currently hitting or going to be hitting on next update
+			if (o.boundingBox.intersects(boundingBox) || o.boundingBox.intersects(futureBox))
 				collisions.add(o);
-			if (o.boundingBox.intersects(futureBox))
-				futureCollisions.add(o);
 		}
 		// System.out.println(collisions.toString());
 		// determine logic booleans
 		touchingGround = false;
 		touchingRightWall = false;
 		touchingLeftWall = false;
-		for (GameObject o : futureCollisions) {
+		for (GameObject o : collisions) {
 			// TODO: figure out how to make robbers not be able to climb walls
 
 			// if future box will collide with the ground
 			if (o instanceof BrickBlock && o.boundingBox.getMinY() >= boundingBox.getMaxY()
-					&& o.boundingBox.getMinY() <= futureBox.getMaxY()) {
+					&& o.boundingBox.intersects(futureBox)) {
 				if (!ducking)
 					y = (o.boundingBox.getMinY() - boundingBox.getHeight() / 2);
 				else
@@ -152,11 +151,15 @@ public class Robber extends Actor {
 				dy = 0;
 				touchingGround = true;
 			}
+
+			// if future box hits ceiling
 			if (o instanceof BrickBlock && o.boundingBox.getMaxY() <= boundingBox.getMinY()
-					&& o.boundingBox.getMaxY() >= futureBox.getMinY()) {
+					&& o.boundingBox.intersects(futureBox)) {
 				y = (o.boundingBox.getMaxY() + boundingBox.getHeight() / 2);
 				dy = 0;
 			}
+
+			// right wall
 			if (o instanceof BrickBlock && o.boundingBox.getMinX() >= boundingBox.getMaxX()
 					&& o.boundingBox.getMinX() <= futureBox.getMaxX()
 					&& o.boundingBox.getMinY() != boundingBox.getMaxY()
@@ -165,6 +168,8 @@ public class Robber extends Actor {
 				dx = 0;
 				touchingRightWall = true;
 			}
+
+			// left wall
 			if (o instanceof BrickBlock && o.boundingBox.getMaxX() <= boundingBox.getMinX()
 					&& o.boundingBox.getMaxX() >= futureBox.getMinX()
 					&& o.boundingBox.getMinY() != boundingBox.getMaxY()
@@ -181,15 +186,25 @@ public class Robber extends Actor {
 	// handles logic when coming to a stop/no movement inputs
 	private void stop() {
 		if (dx > 0) {
-			if (dx - 1 > 0)
+			if (dx - 1 > 0) {
 				dx--;
-			else
+				runningSprite();
+			} else {
 				dx = 0;
+				img = sprites.get(0);
+			}
 		} else if (dx < 0) {
-			if (dx + 1 < 0)
+			if (dx + 1 < 0) {
 				dx++;
-			else
+				runningSprite();
+			} else {
 				dx = 0;
+				if (dy == 0)
+					img = sprites.get(0);
+			}
+		} else {
+			if (dy == 0)
+				img = sprites.get(0);
 		}
 		if (ducking && dx == 0) {
 			crawling = sliding = false;
@@ -197,7 +212,9 @@ public class Robber extends Actor {
 	}
 
 	private void left() {
+		dir = "left";
 		if (!ducking) {
+			runningSprite();
 			if (dx > -10)
 				dx--;
 		} else {
@@ -205,6 +222,7 @@ public class Robber extends Actor {
 				dx--;
 				sliding = false;
 				crawling = true;
+				crawlingSprite();
 			} else {
 				dx += 0.25;
 				sliding = true;
@@ -215,7 +233,9 @@ public class Robber extends Actor {
 	}
 
 	private void right() {
+		dir = "right";
 		if (!ducking) {
+			runningSprite();
 			if (dx < 10)
 				dx++;
 		} else {
@@ -223,6 +243,7 @@ public class Robber extends Actor {
 				dx++;
 				sliding = false;
 				crawling = true;
+				crawlingSprite();
 			} else {
 				sliding = true;
 				crawling = false;
@@ -231,13 +252,31 @@ public class Robber extends Actor {
 		}
 	}
 
+	private void crawlingSprite() {
+		spriteCycler++;
+		if (spriteCycler / 2 > 1)
+			spriteCycler = 0;
+		img = sprites.get(5 + spriteCycler / 2);
+
+	}
+
+	private void runningSprite() {
+		spriteCycler++;
+		if (spriteCycler / 2 > 2)
+			spriteCycler = 0;
+		img = sprites.get(2 + spriteCycler / 2);
+
+	}
+
 	private void duck() {
 		ducking = true;
 	}
 
 	private void jump() {
-		if (touchingGround)
+		if (touchingGround) {
 			dy -= 10;
+			img = sprites.get(1);
+		}
 	}
 
 	public void loadSprites(String s) {

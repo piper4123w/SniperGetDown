@@ -115,6 +115,8 @@ public class Scene {
 
 		if (this instanceof MainMenue)
 			((MainMenue) this).drawTitle();
+		if (this instanceof PlayerSelect)
+			((PlayerSelect) this).drawCharacters();
 
 		if (robberList != null && !robberList.isEmpty()) {
 			int escapeCount = 0;

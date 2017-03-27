@@ -123,9 +123,11 @@ public class Display extends Application {
 			if (message.contains("playLevel")) {
 				System.out.println(message.substring(message.indexOf(',') + 1));
 				if (message.contains("GRID"))
-					ActiveScene = new Scenes.PlayScene(ActiveScene.getGrid());
+					ActiveScene = new Scenes.PlayScene(ActiveScene.getGrid(), 2);	//always starts test game with 1 robber and 1 sniper
 				else
-					ActiveScene = new Scenes.PlayScene(message.substring(message.indexOf(',') + 1));
+					ActiveScene = new Scenes.PlayScene(
+							message.substring(message.indexOf(',') + 1, message.indexOf('*')),
+							message.charAt(message.indexOf('*') + 1) - '0');
 				sceneSwitch = true;
 			}
 			if (sceneSwitch)

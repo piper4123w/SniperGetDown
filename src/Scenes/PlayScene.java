@@ -15,23 +15,24 @@ import javafx.scene.text.TextAlignment;
 public class PlayScene extends Scene {
 	final double menuBarSize = 50;
 
-	public PlayScene(String substring) {
-		robberList = new ArrayList<Robber>(3);
+	public PlayScene(String substring, int i) {
+		robberList = new ArrayList<Robber>(i);
 		File file = new File(System.getProperty("user.dir") + "/Levels/" + substring);
-		System.out.println(file.getAbsolutePath());
+		System.out.println("Players: " + i);
 		grid = new Objects.Grid();
 		grid.fileToGrid(file);
 		world = new Objects.World();
 		world.populateWorld(getGrid());
-		addPlayers();
+
+		addPlayers(i);
 	}
 
-	public PlayScene(Objects.Grid g) {
+	public PlayScene(Objects.Grid g, int i) {
 		robberList = new ArrayList<Robber>(2);
 		grid = g;
 		world = new Objects.World();
 		world.populateWorld(g);
-		addPlayers();
+		addPlayers(i);
 	}
 
 	public void initChildScene() {
@@ -41,11 +42,14 @@ public class PlayScene extends Scene {
 
 	}
 
-	public void addPlayers() {
+	public void addPlayers(int i) {
 		Bank b = (Bank) world.getFirstObject(Bank.class);
 		robberList.add(new Robber(1, b.x, b.y, grid.cellSize));
-		robberList.add(new Robber(2, b.x, b.y, grid.cellSize));
-		robberList.add(new Robber(3, b.x, b.y, grid.cellSize));
+		if (i > 2)
+			robberList.add(new Robber(2, b.x, b.y, grid.cellSize));
+		if (i > 3)
+			robberList.add(new Robber(3, b.x, b.y, grid.cellSize));
+		System.out.println(i + "players created");
 	}
 
 	public void handleMessage(String message, boolean dragging) {

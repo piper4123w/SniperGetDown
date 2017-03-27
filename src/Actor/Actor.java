@@ -24,18 +24,21 @@ public class Actor {
 
 	// renders the Actor image
 	public void render(GraphicsContext gc) {
-		Affine affine = new Affine();
-		gc.save();
-		affine.appendTranslation(x, y);
+		if (img != null) {
+			Affine affine = new Affine();
+			gc.save();
+			affine.appendTranslation(x, y);
 
-		affine.appendRotation(r);
-		affine.appendScale(scalef * (width / img.getWidth()), scalef * (height / img.getHeight()));
-		gc.setTransform(affine);
-		if (dir.equals("right"))
-			gc.drawImage(img, 0 - (img.getWidth() / 2), 0 - (img.getHeight() / 2), img.getWidth(), img.getHeight());
-		else
-			gc.drawImage(img, 0 + (img.getWidth() / 2), 0 - (img.getHeight() / 2), -img.getWidth(), img.getHeight());
-		gc.restore();
+			affine.appendRotation(r);
+			affine.appendScale(scalef * (width / img.getWidth()), scalef * (height / img.getHeight()));
+			gc.setTransform(affine);
+			if (dir.equals("right"))
+				gc.drawImage(img, 0 - (img.getWidth() / 2), 0 - (img.getHeight() / 2), img.getWidth(), img.getHeight());
+			else
+				gc.drawImage(img, 0 + (img.getWidth() / 2), 0 - (img.getHeight() / 2), -img.getWidth(),
+						img.getHeight());
+			gc.restore();
+		}
 	}
 
 	// updates location data based on velocities
@@ -44,9 +47,7 @@ public class Actor {
 		x += dx;
 		y += dy;
 		if (this instanceof Explosion) {
-			if (((Explosion) this).life-- <= 0) {
-				width = height = 0;
-			}
+			((Explosion)this).updateExplosion();
 		}
 	}
 }

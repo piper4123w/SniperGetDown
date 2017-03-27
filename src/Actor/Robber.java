@@ -383,4 +383,10 @@ public class Robber extends Actor {
 
 	}
 
+	public void kill() {
+		health = 0;
+		dead = true;
+
+	}
+
 }

@@ -119,33 +119,14 @@ public class Scene {
 			((MainMenue) this).drawTitle();
 		if (this instanceof PlayerSelect)
 			((PlayerSelect) this).drawCharacters();
+		if(this instanceof PlayScene)
+			((PlayScene) this).updateChild();
 
-		if (otherActorList != null && !otherActorList.isEmpty()) {
-			for (Actor a : otherActorList) {
-				a.render(gc);
-				a.update();
-			}
-		}
-
-		if (robberList != null && !robberList.isEmpty()) {
-			int escapeCount = 0;
-			int deadCount = 0;
-			for (Robber a : robberList) {
-				a.update(input, world, gc);
-				if (a.escaped)
-					escapeCount++;
-				if (a.dead)
-					deadCount++;
-			}
-
-			if (escapeCount + deadCount >= robberList.size())
-				gameOver = true;
-		}
+		
 		if (world != null)
 			world.drawWorld(gc);
 
-		if (gameOver || sniperWin || tieGame)
-			endGame();
+		
 		drawButtons();
 
 	}

@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
 public class Tnt extends GameObject {
 	public final static char gridCode = 'T';
 	public final double blastRadius = 100;
-	boolean dead = false;
+	public boolean dead = false;
 
 	Tnt(double x, double y, double s) {
 		width = height = s;
@@ -28,7 +28,8 @@ public class Tnt extends GameObject {
 	public void blowUp() {
 		if (!dead) {
 			width = height = 0;
-			x = y = -1;
+			img = null;
+			x = y = -100;
 		}
 
 		dead = true;

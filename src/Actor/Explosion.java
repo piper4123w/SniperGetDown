@@ -3,15 +3,21 @@ package Actor;
 import javafx.scene.image.Image;
 
 public class Explosion extends Actor {
-	double x, y, BR;
-	int life = 10;
+	public int life = 10;
 
-	public Explosion(double x, double y, double BR) {
-		this.x = x;
-		this.y = y;
-		this.BR = BR;
-		width = height = BR;
+	public Explosion(double xPos, double yPos, double BR) {
+		x = xPos;
+		y = yPos;
+		width = BR;
+		height = BR;
+		scalef = 1;
 		img = new Image("objectAssets/explosion.png");
-		System.out.println("Created new explosion at " + x + " " + y + " " + BR);
+	}
+
+	public void updateExplosion() {
+		life--;
+		if (life <= 0)
+			img = null;
+		r = Math.random() * 360;
 	}
 }

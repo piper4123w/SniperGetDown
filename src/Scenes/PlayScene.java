@@ -27,6 +27,45 @@ public class PlayScene extends Scene {
 		addPlayers(i);
 	}
 
+	public void updateChild() {
+		chainTnt();
+
+		if (otherActorList != null && !otherActorList.isEmpty()) {
+			for (Actor a : otherActorList) {
+				a.render(gc);
+				a.update();
+			}
+		}
+
+		setGameState();
+		if (gameOver)
+			endGame();
+
+	}
+
+	private void setGameState() {
+		if (robberList != null && !robberList.isEmpty()) {
+			int escapeCount = 0;
+			int deadCount = 0;
+			for (Robber a : robberList) {
+				a.update(input, world, gc);
+				if (a.escaped)
+					escapeCount++;
+				if (a.dead)
+					deadCount++;
+			}
+
+			if (escapeCount + deadCount >= robberList.size()) {
+				gameOver = true;
+				if (escapeCount == 0) {
+					sniperWin = true;
+				} else {
+					tieGame = true;
+				}
+			}
+		}
+	}
+
 	public PlayScene(Objects.Grid g, int i) {
 		robberList = new ArrayList<Robber>(i);
 		grid = g;
@@ -62,18 +101,8 @@ public class PlayScene extends Scene {
 		boolean missed = false;
 		for (GameObject o : world.worldArray) {
 			if (o.boundingBox.contains(x, y)) {
-				if (o instanceof Tnt) {
-					for (Robber r : robberList) {
-						double distanceX = Math.pow(r.x - o.x, 2);
-						double distanceY = Math.pow(r.y - o.y, 2);
-						if (Math.sqrt(distanceX + distanceY) <= ((Tnt) o).blastRadius)
-							r.dead = true;
-					}
-					if (otherActorList == null)
-						otherActorList = new ArrayList<Actor>();
-					otherActorList.add(new Explosion(o.x, o.y, ((Tnt) o).blastRadius));
-					((Tnt) o).blowUp();
-
+				if (o instanceof Tnt && !((Tnt) o).dead) {
+					handleExplosions((Tnt) o);
 				}
 				missed = true;
 				if (Display.debug)
@@ -93,6 +122,46 @@ public class PlayScene extends Scene {
 			if (Display.debug)
 				System.out.println("GameOver");
 		}
+
+	}
+
+	// method chains together Tnt explosions
+	private void chainTnt() {
+		ArrayList<Tnt> bomblist = new ArrayList<Tnt>();
+		for (Actor a : otherActorList) {
+			if (a instanceof Explosion) {
+				Explosion e = (Explosion) a;
+				for (GameObject o : world.worldArray) {
+					if (o instanceof Tnt && e.life < 1 && !((Tnt) o).dead) {
+						double distanceX = Math.pow(e.x - o.x, 2);
+						double distanceY = Math.pow(e.y - o.y, 2);
+						if (Math.sqrt(distanceX + distanceY) <= ((Tnt) o).blastRadius)
+							bomblist.add((Tnt) o);
+					}
+				}
+			}
+		}
+
+		for (Tnt t : bomblist) {
+			handleExplosions(t);
+		}
+	}
+
+	private void handleExplosions(Tnt bomb) {
+		// kill robbers in vicinity of bomb
+		for (Robber r : robberList) {
+			double distanceX = Math.pow(r.x - bomb.x, 2);
+			double distanceY = Math.pow(r.y - bomb.y, 2);
+			if (Math.sqrt(distanceX + distanceY) <= bomb.blastRadius)
+				r.kill();
+		}
+
+		// add explosion actor to the other actor list to show animation
+		if (otherActorList == null)
+			otherActorList = new ArrayList<Actor>();
+		otherActorList.add(new Explosion(bomb.x, bomb.y, bomb.blastRadius));
+
+		bomb.blowUp();
 
 	}
 

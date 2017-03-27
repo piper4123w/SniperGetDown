@@ -17,7 +17,7 @@ public class LevelSelect extends Scene {
 		double x = Display.WIDTH / 10 + PADDING;
 		double y = Display.HEIGHT / 14 + PADDING;
 		for (String s : findLevels()) {
-			buttonList.add(new Button(s.substring(0, s.indexOf('.')), x, y, "SCENE:playLevel," + s, Display.WIDTH / 5,
+			buttonList.add(new Button(s.substring(0, s.indexOf('.')), x, y, "SCENE:playerSelect," + s, Display.WIDTH / 5,
 					Display.HEIGHT / 7));
 			System.out.println(s);
 			x += Display.WIDTH / 5 + PADDING;

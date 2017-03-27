@@ -43,10 +43,11 @@ public class Display extends Application {
 	void initialize(GraphicsContext gc) {
 		ActiveScene = new Scenes.MainMenue();
 		ActiveScene.initScene(gc, this);
-		
+
 		cursor = new Sniper();
 	}
 
+	@SuppressWarnings("unused")
 	public void update() {
 		ActiveScene.updateScene(cursor.x, cursor.y);
 		cursor.update();
@@ -107,6 +108,10 @@ public class Display extends Application {
 				ActiveScene = new Scenes.EditorScene();
 				sceneSwitch = true;
 			}
+			if (message.contains("playerSelect")) {
+				ActiveScene = new Scenes.PlayerSelect(message.substring(message.indexOf(',') + 1));
+				sceneSwitch = true;
+			}
 			if (message.equals("levelSelect")) {
 				ActiveScene = new Scenes.LevelSelect();
 				sceneSwitch = true;
@@ -128,6 +133,7 @@ public class Display extends Application {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void start(Stage theStage) {
 		this.theStage = theStage;

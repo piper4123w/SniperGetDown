@@ -22,7 +22,7 @@ public class Scene {
 
 	double cursorX, cursorY;
 	boolean gameOver = false;
-	boolean sniperWin;
+	boolean sniperWin, tieGame = false;
 
 	ArrayList<Button> buttonList;
 	ArrayList<Robber> robberList;
@@ -49,6 +49,8 @@ public class Scene {
 			((LevelSelect) this).initChildScene();
 		if (this instanceof PlayScene)
 			((PlayScene) this).initChildScene();
+		if (this instanceof PlayerSelect)
+			((PlayerSelect) this).initChildScene();
 	}
 
 	// checks click/drag based on location
@@ -114,17 +116,24 @@ public class Scene {
 		if (this instanceof MainMenue)
 			((MainMenue) this).drawTitle();
 
-		if (world != null)
-			world.drawWorld(gc);
 		if (robberList != null && !robberList.isEmpty()) {
-			gameOver = true;
+			int escapeCount = 0;
+			int deadCount = 0;
 			for (Robber a : robberList) {
 				a.update(input, world, gc);
-				if (!a.escaped)
-					gameOver = false;
+				if (a.escaped)
+					escapeCount++;
+				if (a.dead)
+					deadCount++;
 			}
+
+			if (escapeCount + deadCount >= 2)
+				gameOver = true;
 		}
-		if (gameOver || sniperWin)
+		if (world != null)
+			world.drawWorld(gc);
+
+		if (gameOver || sniperWin || tieGame)
 			endGame();
 		drawButtons();
 
@@ -138,9 +147,20 @@ public class Scene {
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.fillText("The Sniper is the Winner!", Display.WIDTH / 2, Display.HEIGHT / 2);
 		} else {
-			gc.setFont(new Font("Arial Black", 50));
-			gc.setTextAlign(TextAlignment.CENTER);
-			gc.fillText("The Robbers Escaped!", Display.WIDTH / 2, Display.HEIGHT / 2);
+			int deadCount = 0;
+			for (Robber r : robberList) {
+				if (r.dead)
+					deadCount++;
+			}
+			if (deadCount == 0) {
+				gc.setFont(new Font("Arial Black", 50));
+				gc.setTextAlign(TextAlignment.CENTER);
+				gc.fillText("The Robbers Escaped!", Display.WIDTH / 2, Display.HEIGHT / 2);
+			} else {
+				gc.setFont(new Font("Arial Black", 50));
+				gc.setTextAlign(TextAlignment.CENTER);
+				gc.fillText("Tie Game! Only one Robber Escaped", Display.WIDTH / 2, Display.HEIGHT / 2);
+			}
 		}
 
 		buttonList.add(new Button("Quit", (Display.WIDTH / 2) - 250, 75, "SCENE:quit", 200, 100));

@@ -62,6 +62,14 @@ public class Robber extends Actor {
 			LEFT = "NUMPAD4";
 			RIGHT = "NUMPAD6";
 			break;
+		case 3:
+			loadSprites("R_");
+			UP = "I";
+			DOWN = "K";
+			LEFT = "J";
+			RIGHT = "L";
+			break;
+
 		}
 
 		img = sprites.get(1);

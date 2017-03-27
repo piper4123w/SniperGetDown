@@ -100,12 +100,19 @@ public class Display extends Application {
 		System.out.println("message= " + message);
 		boolean sceneSwitch = false;
 		if (message != null) {
+			if (message.equals("quit")) {
+				System.exit(0);
+			}
 			if (message.equals("levelEditor")) {
 				ActiveScene = new Scenes.EditorScene();
 				sceneSwitch = true;
 			}
 			if (message.equals("levelSelect")) {
 				ActiveScene = new Scenes.LevelSelect();
+				sceneSwitch = true;
+			}
+			if (message.equals("main")) {
+				ActiveScene = new Scenes.MainMenue();
 				sceneSwitch = true;
 			}
 			if (message.contains("playLevel")) {

@@ -18,7 +18,8 @@ public class GameObject extends Objects.World {
 	public Image img;
 
 	double scalef;
-	protected double height, width;
+	public double height;
+	public double width;
 
 	public BoundingBox boundingBox;
 

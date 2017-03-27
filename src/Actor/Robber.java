@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import Objects.BrickBlock;
 import Objects.GameObject;
+import Objects.Van;
 import Objects.World;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -19,11 +20,12 @@ import javafx.geometry.BoundingBox;
 public class Robber extends Actor {
 	ArrayList<Image> sprites;
 	String[] uris = { "idle.png", "jump.png", "running1.png", "running2.png", "running3.png", "crawl1.png",
-			"crawl2.png", "dive.png", "idle_blink.png" };
+			"crawl2.png", "dive.png", "idle_blink.png", "ducking.png", "dead.png" };
 	int spriteCycler = 4;
+	int health = 2;
 
 	String UP, DOWN, LEFT, RIGHT;
-	double headX, headY, headR;
+	double headX, headY, headR, standingH, standingW;
 	int playerNumber;
 	boolean touchingGround = false;
 	boolean touchingLeftWall = false;
@@ -32,6 +34,8 @@ public class Robber extends Actor {
 	boolean ducking = false;
 	boolean sliding = false;
 	boolean crawling = false;
+	public boolean dead = false;
+	public boolean escaped = false;
 
 	ArrayList<GameObject> collisions;
 
@@ -65,12 +69,13 @@ public class Robber extends Actor {
 		this.x = x;
 		this.y = Math.round(y);
 
-		this.width = s * 0.9;
-		this.height = 2 * s * 0.9;
+		standingW = s * 0.9;
+		standingH = 2 * s * 0.9;
+		headR = standingW;
 
 		// body bounding box used for detecting walking/jumping/colliding with
 		// game objects
-		boundingBox = new BoundingBox(this.x, this.y - (height / 2), this.width, this.height);
+		boundingBox = new BoundingBox(this.x, this.y - (standingH / 2), this.standingW, this.standingH);
 
 		this.scalef = 1;
 	}
@@ -80,34 +85,64 @@ public class Robber extends Actor {
 		setCollisions(world);
 		// sets up a list of current and future collisions
 
-		ducking = false;
-		if (input.contains(UP) && !input.contains(DOWN) && touchingGround)
-			jump();
-		else if (input.contains(DOWN) && !input.contains(UP))
-			duck();
-		if (input.contains(RIGHT) && !input.contains(LEFT) && !touchingRightWall)
-			right();
-		else if (input.contains(LEFT) && !input.contains(RIGHT) && !touchingLeftWall)
-			left();
-		else
-			stop();
+		if (!dead && !escaped) {
+			if (input.contains(UP) && !input.contains(DOWN) && touchingGround)
+				jump();
+			else if (input.contains(DOWN) && !input.contains(UP) && !ducking)
+				ducking = true;
+
+			if (ducking && !input.contains(DOWN)) {
+				ducking = false;
+				y -= height / 2; // keeps player from falling through floor
+			}
+
+			if (input.contains(RIGHT) && !input.contains(LEFT) && !touchingRightWall)
+				right();
+			else if (input.contains(LEFT) && !input.contains(RIGHT) && !touchingLeftWall)
+				left();
+			else
+				stop();
+
+			// handles height and width of hit boxes based on current stance
+			if (!ducking) {
+				width = standingW;
+				height = standingH;
+			} else {
+				height = standingW;
+				if (sliding || crawling) {
+					width = standingH;
+				}
+
+				else {
+					width = standingW;
+					img = sprites.get(9);
+				}
+			}
+		} else {
+
+			if (dead) {
+				height = standingW;
+				width = standingH;
+				img = sprites.get(10);
+			} else {
+				width = 0;
+				height = 0;
+				dx = dy = 0;
+				x = y = 0;
+			}
+		}
 		if (!touchingGround && dy < TERMINAL_VELOCITY)
 			dy++;
 		super.update();
 
-		if (!ducking) {
-			boundingBox = new BoundingBox(x - width / 4, y - (height / 2), width / 2, height);
-			futureBox = new BoundingBox((x - width / 4) + dx, (y - (height / 2)) + dy, width / 2, height);
-		} else {
-			if (sliding || crawling) {
-				boundingBox = new BoundingBox(x - height / 2, y, height, height / 2);
-				futureBox = new BoundingBox((x - height / 2) + dx, y + dy, height, height / 2);
-			} else {
-				boundingBox = new BoundingBox(x - width / 4, y, width / 2, height / 2);
-				futureBox = new BoundingBox((x - width / 4) + dx, y + dy, width / 2, height / 2);
-			}
+		setHeadSphere();
 
-		}
+		boundingBox = new BoundingBox(x - width / 2, y - (height / 2), width, height);
+		futureBox = new BoundingBox((x + dx) - width / 2, (y + dy) - height / 2, width, height);
+
+		bodyHitBox = new BoundingBox(x - width / 4, y, width / 2, height / 3);
+
+		// debug used for visualizing hit boxes
 		if (Display.Display.debug) {
 			if (boundingBox != null) {
 				gc.setStroke(Color.BLACK);
@@ -119,9 +154,26 @@ public class Robber extends Actor {
 
 				gc.setStroke(Color.BLUE);
 				gc.strokeRect(futureBox.getMinX(), futureBox.getMinY(), futureBox.getWidth(), futureBox.getHeight());
+
+				gc.setStroke(Color.RED);
+				gc.strokeOval(headX, headY, headR, headR);
+				gc.strokeRect(bodyHitBox.getMinX(), bodyHitBox.getMinY(), bodyHitBox.getWidth(),
+						bodyHitBox.getHeight());
 			}
 		}
+
 		super.render(gc);
+	}
+
+	// sets the headSphere location for headshot detection
+	private void setHeadSphere() {
+		headY = y - height / 2;
+		headX = x - width / 2;
+		if (ducking && (sliding || crawling)) {
+			if (dir.equals("right"))
+				headX = x;
+		}
+
 	}
 
 	// sets collision booleans for game logic
@@ -133,7 +185,7 @@ public class Robber extends Actor {
 			if (o.boundingBox.intersects(boundingBox) || o.boundingBox.intersects(futureBox))
 				collisions.add(o);
 		}
-		// System.out.println(collisions.toString());
+
 		// determine logic booleans
 		touchingGround = false;
 		touchingRightWall = false;
@@ -144,10 +196,7 @@ public class Robber extends Actor {
 			// if future box will collide with the ground
 			if (o instanceof BrickBlock && o.boundingBox.getMinY() >= boundingBox.getMaxY()
 					&& o.boundingBox.intersects(futureBox)) {
-				if (!ducking)
-					y = (o.boundingBox.getMinY() - boundingBox.getHeight() / 2);
-				else
-					y = (o.boundingBox.getMinY() - boundingBox.getHeight());
+				y = (o.boundingBox.getMinY() - boundingBox.getHeight() / 2);
 				dy = 0;
 				touchingGround = true;
 			}
@@ -161,29 +210,42 @@ public class Robber extends Actor {
 
 			// right wall
 			if (o instanceof BrickBlock && o.boundingBox.getMinX() >= boundingBox.getMaxX()
-					&& o.boundingBox.getMinX() <= futureBox.getMaxX()
-					&& o.boundingBox.getMinY() != boundingBox.getMaxY()
-					&& o.boundingBox.getMaxY() != boundingBox.getMinY()) {
-				x = o.boundingBox.getMinX() - (width / 4);
-				dx = 0;
-				touchingRightWall = true;
+					&& o.boundingBox.getMinX() <= futureBox.getMaxX()) {
+				for (double ytmp = futureBox.getMaxY() - 3; ytmp >= o.boundingBox.getMinY(); ytmp -= 0.1) {
+					if (o.boundingBox.contains(futureBox.getMaxX(), ytmp)) {
+						x = o.boundingBox.getMinX() - (standingW / 2);
+						dx = 0;
+						touchingRightWall = true;
+						sliding = crawling = false;
+						break;
+					}
+				}
+
 			}
 
 			// left wall
 			if (o instanceof BrickBlock && o.boundingBox.getMaxX() <= boundingBox.getMinX()
-					&& o.boundingBox.getMaxX() >= futureBox.getMinX()
-					&& o.boundingBox.getMinY() != boundingBox.getMaxY()
-					&& o.boundingBox.getMaxY() != boundingBox.getMinY()) {
-				x = o.boundingBox.getMaxX() + (width / 4);
-				dx = 0;
-				touchingLeftWall = true;
+					&& o.boundingBox.getMaxX() >= futureBox.getMinX()) {
+				for (double ytmp = futureBox.getMaxY() - 3; ytmp >= o.boundingBox.getMinY(); ytmp -= 0.1) {
+					if (o.boundingBox.contains(futureBox.getMinX(), ytmp)) {
+						x = o.boundingBox.getMaxX() + (standingW / 2);
+						dx = 0;
+						touchingLeftWall = true;
+						sliding = crawling = false;
+						break;
+					}
+				}
+			}
+
+			if (o instanceof Van && o.boundingBox.contains(boundingBox)) {
+				escaped = true;
 			}
 
 		}
 
 	}
 
-	// handles logic when coming to a stop/no movement inputs
+	// handles logic and sprites when coming to a stop/no movement inputs
 	private void stop() {
 		if (dx > 0) {
 			if (dx - 1 > 0) {
@@ -218,8 +280,8 @@ public class Robber extends Actor {
 			if (dx > -10)
 				dx--;
 		} else {
-			if (dx > -2) {
-				dx--;
+			if (dx >= -3) {
+				dx = -3;
 				sliding = false;
 				crawling = true;
 				crawlingSprite();
@@ -227,11 +289,13 @@ public class Robber extends Actor {
 				dx += 0.25;
 				sliding = true;
 				crawling = false;
+				img = sprites.get(7);
 			}
 		}
 
 	}
 
+	// when moving right
 	private void right() {
 		dir = "right";
 		if (!ducking) {
@@ -239,8 +303,8 @@ public class Robber extends Actor {
 			if (dx < 10)
 				dx++;
 		} else {
-			if (dx < 2) {
-				dx++;
+			if (dx <= 3) {
+				dx = 3;
 				sliding = false;
 				crawling = true;
 				crawlingSprite();
@@ -248,10 +312,12 @@ public class Robber extends Actor {
 				sliding = true;
 				crawling = false;
 				dx -= 0.25;
+				img = sprites.get(7);
 			}
 		}
 	}
 
+	// cycles through crawling sprites
 	private void crawlingSprite() {
 		spriteCycler++;
 		if (spriteCycler / 2 > 1)
@@ -260,6 +326,7 @@ public class Robber extends Actor {
 
 	}
 
+	// cycles through running sprites
 	private void runningSprite() {
 		spriteCycler++;
 		if (spriteCycler / 2 > 2)
@@ -268,10 +335,7 @@ public class Robber extends Actor {
 
 	}
 
-	private void duck() {
-		ducking = true;
-	}
-
+	// handles jump logic
 	private void jump() {
 		if (touchingGround) {
 			dy -= 10;
@@ -279,22 +343,34 @@ public class Robber extends Actor {
 		}
 	}
 
+	// loads in sprite assets
 	public void loadSprites(String s) {
 		for (String u : uris) {
 			sprites.add(new Image("CharacterAssets/" + s + u));
 		}
 	}
 
-	public double getHeadX() {
-		return headX;
-	}
+	// checks whether or not the robber was shot and what type of damage they
+	// take
+	public void checkShot(double shotX, double shotY) {
+		double a = Math.pow(shotX - headX, 2);
+		double b = Math.pow(shotY - headY, 2);
 
-	public double getHeadY() {
-		return headY;
-	}
+		if (Math.sqrt(a + b) < headR) {
+			if (Display.Display.debug)
+				System.out.println("head shot!");
+			health = 0;
+		}
 
-	public double getHeadR() {
-		return headR;
+		if (bodyHitBox.contains(shotX, shotY)) {
+			if (Display.Display.debug)
+				System.out.println("Body Shot! HEALTH: " + health);
+			health--;
+		}
+
+		if (health == 0)
+			dead = true;
+
 	}
 
 }

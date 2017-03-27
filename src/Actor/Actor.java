@@ -43,6 +43,10 @@ public class Actor {
 		r += dr;
 		x += dx;
 		y += dy;
-
+		if (this instanceof Explosion) {
+			if (((Explosion) this).life-- <= 0) {
+				width = height = 0;
+			}
+		}
 	}
 }

@@ -8,6 +8,7 @@ package Scenes;
 
 import java.util.ArrayList;
 
+import Actor.Actor;
 import Actor.Robber;
 import Display.Display;
 import javafx.geometry.BoundingBox;
@@ -26,6 +27,7 @@ public class Scene {
 
 	ArrayList<Button> buttonList;
 	ArrayList<Robber> robberList;
+	ArrayList<Actor> otherActorList = new ArrayList<Actor>();
 	public ArrayList<String> input;
 
 	protected Objects.Grid grid;
@@ -117,6 +119,13 @@ public class Scene {
 			((MainMenue) this).drawTitle();
 		if (this instanceof PlayerSelect)
 			((PlayerSelect) this).drawCharacters();
+
+		if (otherActorList != null && !otherActorList.isEmpty()) {
+			for (Actor a : otherActorList) {
+				a.render(gc);
+				a.update();
+			}
+		}
 
 		if (robberList != null && !robberList.isEmpty()) {
 			int escapeCount = 0;

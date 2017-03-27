@@ -43,15 +43,18 @@ public class EditorScene extends Scene {
 		buttonList.add(new Button(new Image("objectAssets/cover.gif"),
 				Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2), Display.HEIGHT - (menuBarSize / 2),
 				menuBarSize, menuBarSize, "cover"));
+		buttonList.add(new Button(new Image("objectAssets/TNT.png"),
+				Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2), Display.HEIGHT - (menuBarSize / 2),
+				menuBarSize, menuBarSize, "tnt"));
 		buttonList.add(new Button(new Image("objectAssets/Bank.png"),
 				Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2), Display.HEIGHT - (menuBarSize / 2),
 				menuBarSize, menuBarSize, "bank"));
 		buttonList.add(new Button(new Image("objectAssets/Van.png"),
 				Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2), Display.HEIGHT - (menuBarSize / 2),
 				menuBarSize, menuBarSize, "van"));
-		
-		buttonList.add(new Button("Quit", Display.WIDTH/2, Display.HEIGHT - (menuBarSize / 2),
-				"SCENE:main", menuBarSize * 3, menuBarSize));
+
+		buttonList.add(new Button("Quit", Display.WIDTH / 2, Display.HEIGHT - (menuBarSize / 2), "SCENE:main",
+				menuBarSize * 3, menuBarSize));
 
 		grid = new Objects.Grid((int) (Display.WIDTH / cellSize), (int) ((Display.HEIGHT - menuBarSize) / cellSize),
 				cellSize);
@@ -90,7 +93,7 @@ public class EditorScene extends Scene {
 		if (file != null) {
 			try {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-				String levelString = grid.rows + "," + grid.cols + ":" + (int)grid.cellSize + "\n";
+				String levelString = grid.rows + "," + grid.cols + ":" + (int) grid.cellSize + "\n";
 				for (int i = 0; i < grid.cols; i++) {
 					for (int j = 0; j < grid.rows; j++) {
 						levelString += (grid.gridCode[j][i]);
@@ -140,6 +143,8 @@ public class EditorScene extends Scene {
 			selectedBlockType = BrickBlock.gridCode;
 		if (message.equals("cover"))
 			selectedBlockType = CoverBlock.gridCode;
+		if (message.equals("tnt"))
+			selectedBlockType = Tnt.gridCode;
 		if (message.equals("empty"))
 			selectedBlockType = ' ';
 		if (message.equals("bank"))

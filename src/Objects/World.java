@@ -48,6 +48,9 @@ public class World {
 		case Bank.gridCode:
 			worldArray.add(new Bank(x, y, cellSize));
 			break;
+		case Tnt.gridCode:
+			worldArray.add(new Tnt(x, y, cellSize));
+			break;
 		case Van.gridCode:
 			worldArray.add(new Van(x, y, cellSize));
 			break;

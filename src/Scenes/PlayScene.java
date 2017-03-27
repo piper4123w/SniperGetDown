@@ -28,7 +28,7 @@ public class PlayScene extends Scene {
 	}
 
 	public PlayScene(Objects.Grid g, int i) {
-		robberList = new ArrayList<Robber>(2);
+		robberList = new ArrayList<Robber>(1);
 		grid = g;
 		world = new Objects.World();
 		world.populateWorld(g);

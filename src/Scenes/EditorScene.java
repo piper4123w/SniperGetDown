@@ -49,6 +49,9 @@ public class EditorScene extends Scene {
 		buttonList.add(new Button(new Image("objectAssets/Van.png"),
 				Display.WIDTH - (buttonFromRight += 2) * (menuBarSize / 2), Display.HEIGHT - (menuBarSize / 2),
 				menuBarSize, menuBarSize, "van"));
+		
+		buttonList.add(new Button("Quit", Display.WIDTH/2, Display.HEIGHT - (menuBarSize / 2),
+				"SCENE:main", menuBarSize * 3, menuBarSize));
 
 		grid = new Objects.Grid((int) (Display.WIDTH / cellSize), (int) ((Display.HEIGHT - menuBarSize) / cellSize),
 				cellSize);

@@ -129,7 +129,7 @@ public class Scene {
 					deadCount++;
 			}
 
-			if (escapeCount + deadCount >= 2)
+			if (escapeCount + deadCount >= robberList.size())
 				gameOver = true;
 		}
 		if (world != null)

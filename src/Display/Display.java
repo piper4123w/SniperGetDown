@@ -21,7 +21,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
 public class Display extends Application {
-	public final static boolean debug = true;
+	public final static boolean debug = false;
 
 	public final int mainMenue = 0;
 

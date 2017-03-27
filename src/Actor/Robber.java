@@ -131,7 +131,9 @@ public class Robber extends Actor {
 			if (dead) {
 				height = standingW;
 				width = standingH;
+				stop();
 				img = sprites.get(10);
+
 			} else {
 				width = 0;
 				height = 0;

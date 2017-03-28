@@ -77,8 +77,6 @@ public class Sniper extends Actor {
 		scalef += dScale;
 		super.update();
 
-		System.out.println(x + " " + y);
-
 	}
 
 	// sets Position of reticle (usually following with cursor)

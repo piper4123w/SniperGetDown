@@ -1,3 +1,9 @@
+/* Author: Kyle Lawson
+ * 
+ * Description: Subclass to handle button animation and message passing
+ * 
+ */
+
 package Scenes;
 
 import javafx.scene.image.*;
@@ -74,6 +80,7 @@ public class Button extends Scene {
 		this.scaleW = 1;
 	}
 
+	// bounding box for button clicks
 	public BoundingBox getBoundingBox() {
 		if (imageButton) {
 			width = img.getWidth();
@@ -84,6 +91,7 @@ public class Button extends Scene {
 
 	}
 
+	// method handles hoverEffect when mousing over buttons
 	public void hoverEffect(boolean hovering) {
 		if (hovering) {
 			if (bigScaleW == 0 || bigScaleH == 0) {
@@ -101,7 +109,7 @@ public class Button extends Scene {
 	public void render(GraphicsContext gc) {
 		if (!imageButton) {
 			gc.setFill(Color.LIGHTGREY);
-			gc.fillRoundRect(x-width/2, y-height/2, width, height, 10, 10);
+			gc.fillRoundRect(x - width / 2, y - height / 2, width, height, 10, 10);
 		}
 		gc.save();
 		Affine affine = new Affine();
@@ -115,7 +123,7 @@ public class Button extends Scene {
 			gc.setFont(new Font("Arial Black", 25));
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.fillText(title, 0, 0);
-			//System.out.println("Filling at " + x + ',' + y + " " + title);
+			// System.out.println("Filling at " + x + ',' + y + " " + title);
 		}
 		gc.restore();
 

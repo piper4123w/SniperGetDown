@@ -1,3 +1,9 @@
+/* Author: Kyle Lawson
+ * 
+ * Description: Scene playing. handles in game physics and controls
+ * 
+ */
+
 package Scenes;
 
 import java.io.File;

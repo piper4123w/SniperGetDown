@@ -1,3 +1,8 @@
+/* Author: Kyle Lawson
+ * 
+ * Description: main menu scene allows user to choose Edit or LevelSelect Scene
+ * 
+ */
 package Scenes;
 
 import javafx.scene.paint.Color;
@@ -22,7 +27,7 @@ public class MainMenue extends Scene {
 	void drawTitle() {
 		Affine affine = new Affine();
 		gc.save();
-		affine.appendTranslation(Display.WIDTH / 2 - (img.getWidth()/2), 10);
+		affine.appendTranslation(Display.WIDTH / 2 - (img.getWidth() / 2), 10);
 		affine.appendScale(500 / img.getWidth(), 300 / img.getHeight());
 		gc.setTransform(affine);
 		gc.drawImage(img, 0, 0);

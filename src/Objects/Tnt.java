@@ -1,7 +1,7 @@
 /*
  * Author: Kyle Lawson
  * 
- * Description: Sub class for brick block item. Object used for main construction of floors and walls
+ * Description: Sub class for Tnt block item. Object explodes and kills robbers or Tnt in area
  */
 
 package Objects;

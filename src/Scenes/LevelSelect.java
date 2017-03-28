@@ -1,3 +1,8 @@
+/* Author: Kyle Lawson
+ * 
+ * Description: Scene that allows user to select one of the levels in the default folder
+ * 
+ */
 package Scenes;
 
 import java.io.File;
@@ -17,8 +22,8 @@ public class LevelSelect extends Scene {
 		double x = Display.WIDTH / 10 + PADDING;
 		double y = Display.HEIGHT / 14 + PADDING;
 		for (String s : findLevels()) {
-			buttonList.add(new Button(s.substring(0, s.indexOf('.')), x, y, "SCENE:playerSelect," + s, Display.WIDTH / 5,
-					Display.HEIGHT / 7));
+			buttonList.add(new Button(s.substring(0, s.indexOf('.')), x, y, "SCENE:playerSelect," + s,
+					Display.WIDTH / 5, Display.HEIGHT / 7));
 			System.out.println(s);
 			x += Display.WIDTH / 5 + PADDING;
 			if (x > Display.WIDTH - Display.WIDTH / 10) {
@@ -28,6 +33,7 @@ public class LevelSelect extends Scene {
 		}
 	}
 
+	// list of level files
 	private ArrayList<String> findLevels() {
 		File folder = new File(System.getProperty("user.dir") + "/Levels");
 		File[] listOfFiles = folder.listFiles();

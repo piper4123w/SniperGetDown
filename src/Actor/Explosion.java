@@ -1,3 +1,8 @@
+/* Author: Kyle Lawson
+ * 
+ * Description: Subclass of Actor. Handles explosion animation and delayed Tnt chaining
+ * 
+ */
 package Actor;
 
 import java.io.File;

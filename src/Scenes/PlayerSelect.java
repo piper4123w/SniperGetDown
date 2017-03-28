@@ -1,3 +1,9 @@
+/* Author: Kyle Lawson
+ * 
+ * Description: Scene that allows sniper to choose how many players will be in the game. Also displays controls
+ * 
+ */
+
 package Scenes;
 
 import Display.Display;
@@ -23,6 +29,7 @@ public class PlayerSelect extends Scene {
 				"SCENE:playLevel," + levelFile + "*" + 4, Display.WIDTH / 5, Display.HEIGHT / 7));
 	}
 
+	// draws characters and controls
 	public void drawCharacters() {
 		double scale = 0.4;
 		Image img = new Image("menuItems/G_disp.png");

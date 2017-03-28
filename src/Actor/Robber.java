@@ -384,7 +384,7 @@ public class Robber extends Actor {
 			health--;
 		}
 
-		if (health == 0)
+		if (health == 0 && !dead)
 			kill();
 
 	}

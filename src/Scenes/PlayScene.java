@@ -44,8 +44,6 @@ public class PlayScene extends Scene {
 		}
 
 		setGameState();
-		if (gameOver)
-			endGame();
 
 	}
 

@@ -20,6 +20,9 @@ public class Sniper extends Actor {
 	private int clickRotCount;
 	private final int shootCoolDown = 16;
 	private final double scaleSpeed = 0.025;
+	double velocity;
+
+	private double destX, destY;
 
 	private double dScale;
 
@@ -34,9 +37,13 @@ public class Sniper extends Actor {
 
 	// update method handling reticle location and animation
 	public void update() {
+		double distX = destX - x;
+		double distY = destY - y;
+		x += distX / 5;
+		y += distY / 5;
 		if (clicked && clickCount == 0) { // just clicked the mouse so start
 											// click animation
-			if(Display.Display.ActiveScene instanceof PlayScene)
+			if (Display.Display.ActiveScene instanceof PlayScene)
 				shot.play();
 
 			clickCount = shootCoolDown;
@@ -70,12 +77,14 @@ public class Sniper extends Actor {
 		scalef += dScale;
 		super.update();
 
+		System.out.println(x + " " + y);
+
 	}
 
 	// sets Position of reticle (usually following with cursor)
 	public void setPosition(double x2, double y2) {
-		x = x2;
-		y = y2;
+		destX = x2;
+		destY = y2;
 	}
 
 }

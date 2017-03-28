@@ -119,14 +119,15 @@ public class Scene {
 			((MainMenue) this).drawTitle();
 		if (this instanceof PlayerSelect)
 			((PlayerSelect) this).drawCharacters();
-		if(this instanceof PlayScene)
+		if (this instanceof PlayScene)
 			((PlayScene) this).updateChild();
 
-		
 		if (world != null)
 			world.drawWorld(gc);
 
-		
+		if (gameOver)
+			endGame();
+
 		drawButtons();
 
 	}
@@ -151,7 +152,7 @@ public class Scene {
 			} else {
 				gc.setFont(new Font("Arial Black", 50));
 				gc.setTextAlign(TextAlignment.CENTER);
-				gc.fillText("Tie Game! Only one Robber Escaped", Display.WIDTH / 2, Display.HEIGHT / 2);
+				gc.fillText("Tie Game! Some Robbers Escaped", Display.WIDTH / 2, Display.HEIGHT / 2);
 			}
 		}
 

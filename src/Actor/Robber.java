@@ -6,8 +6,9 @@
 
 package Actor;
 
+import java.io.File;
 import java.util.ArrayList;
-
+import javafx.scene.media.AudioClip;
 import Objects.BrickBlock;
 import Objects.GameObject;
 import Objects.Van;
@@ -43,6 +44,8 @@ public class Robber extends Actor {
 	BoundingBox bodyHitBox;
 
 	public final static int TERMINAL_VELOCITY = 15;
+
+	AudioClip death;
 
 	public Robber(int playerNum, double x, double y, double s) {
 		sprites = new ArrayList<Image>(5);
@@ -86,6 +89,9 @@ public class Robber extends Actor {
 		boundingBox = new BoundingBox(this.x, this.y - (standingH / 2), this.standingW, this.standingH);
 
 		this.scalef = 1;
+
+		death = new AudioClip(new File("src/audio/death.mp3").toURI().toString());
+
 	}
 
 	// updates robber based on player inputs, collisions, and velocities
@@ -379,14 +385,14 @@ public class Robber extends Actor {
 		}
 
 		if (health == 0)
-			dead = true;
+			kill();
 
 	}
 
 	public void kill() {
 		health = 0;
 		dead = true;
-
+		death.play();
 	}
 
 }

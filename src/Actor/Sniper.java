@@ -6,9 +6,14 @@
 
 package Actor;
 
+import java.io.File;
+
+import Scenes.PlayScene;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 
 public class Sniper extends Actor {
+	AudioClip shot;
 
 	public boolean clicked = false;
 	public int clickCount = 0;
@@ -23,12 +28,17 @@ public class Sniper extends Actor {
 		img = new Image("objectAssets/reticle.gif");
 		scalef = 1;
 
+		shot = new AudioClip(new File("src/audio/sniperShot.mp3").toURI().toString());
+
 	}
 
 	// update method handling reticle location and animation
 	public void update() {
 		if (clicked && clickCount == 0) { // just clicked the mouse so start
 											// click animation
+			if(Display.Display.ActiveScene instanceof PlayScene)
+				shot.play();
+
 			clickCount = shootCoolDown;
 			clickRotCount = clickCount / 2;
 			if (Math.random() > 0.5) // chose random rotation direction

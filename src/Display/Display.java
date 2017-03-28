@@ -32,7 +32,7 @@ public class Display extends Application {
 	public final static int WIDTH = 1250;
 	public final static int HEIGHT = 800;
 
-	public Scenes.Scene ActiveScene;
+	public static Scenes.Scene ActiveScene;
 
 	public Sniper cursor;
 
@@ -123,7 +123,16 @@ public class Display extends Application {
 			if (message.contains("playLevel")) {
 				System.out.println(message.substring(message.indexOf(',') + 1));
 				if (message.contains("GRID"))
-					ActiveScene = new Scenes.PlayScene(ActiveScene.getGrid(), 2);	//always starts test game with 1 robber and 1 sniper
+					ActiveScene = new Scenes.PlayScene(ActiveScene.getGrid(), 2); // always
+																					// starts
+																					// test
+																					// game
+																					// with
+																					// 1
+																					// robber
+																					// and
+																					// 1
+																					// sniper
 				else
 					ActiveScene = new Scenes.PlayScene(
 							message.substring(message.indexOf(',') + 1, message.indexOf('*')),
@@ -171,4 +180,5 @@ public class Display extends Application {
 		theStage.show();
 
 	}
+
 }

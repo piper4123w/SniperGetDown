@@ -37,10 +37,15 @@ public class Sniper extends Actor {
 
 	// update method handling reticle location and animation
 	public void update() {
-		double distX = destX - x;
-		double distY = destY - y;
-		x += distX / 20;
-		y += distY / 20;
+		if (Display.Display.ActiveScene instanceof PlayScene && !((PlayScene) Display.Display.ActiveScene).gameOver) {
+			double distX = destX - x;
+			double distY = destY - y;
+			x += distX / 20;
+			y += distY / 20;
+		} else {
+			x = destX;
+			y = destY;
+		}
 		if (clicked && clickCount == 0) { // just clicked the mouse so start
 											// click animation
 			if (Display.Display.ActiveScene instanceof PlayScene)

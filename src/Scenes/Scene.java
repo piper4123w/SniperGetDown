@@ -22,7 +22,7 @@ public class Scene {
 	public Display display;
 
 	double cursorX, cursorY;
-	boolean gameOver = false;
+	public boolean gameOver = false;
 	boolean sniperWin, tieGame = false;
 
 	ArrayList<Button> buttonList;

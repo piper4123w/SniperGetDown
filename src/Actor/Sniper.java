@@ -18,7 +18,7 @@ public class Sniper extends Actor {
 	public boolean clicked = false;
 	public int clickCount = 0;
 	private int clickRotCount;
-	private final int shootCoolDown = 16;
+	private final int shootCoolDown = 30;
 	private final double scaleSpeed = 0.025;
 	double velocity;
 
@@ -39,8 +39,8 @@ public class Sniper extends Actor {
 	public void update() {
 		double distX = destX - x;
 		double distY = destY - y;
-		x += distX / 5;
-		y += distY / 5;
+		x += distX / 20;
+		y += distY / 20;
 		if (clicked && clickCount == 0) { // just clicked the mouse so start
 											// click animation
 			if (Display.Display.ActiveScene instanceof PlayScene)
